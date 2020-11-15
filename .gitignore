@@ -29,8 +29,8 @@ dist/
 *\.egg*
 # data
 /media/
-/node_modules/
-/static/
+/node_modules//static/
 .vscode/
+
 # Exported results file
 django-queries-results.html
