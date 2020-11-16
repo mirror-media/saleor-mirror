@@ -1,0 +1,195 @@
+---
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: /saleor
+
+steps:
+  - name: startSlack
+    pull: if-not-exists
+    image: plugins/slack
+    settings:
+      channel: jenkins
+      icon_url: https://avatars2.githubusercontent.com/u/2181346?s=200&v=4
+      template: "*start* building *{{repo.name}}* <${DRONE_BUILD_LINK}|#{{build.number}}>. Someone gave *{{build.branch}}* a little push.\n"
+      username: drone
+    environment:
+      SLACK_WEBHOOK:
+        from_secret: slack_webhook
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: restoreCache
+    pull: if-not-exists
+    image: drillster/drone-volume-cache
+    settings:
+      mount:
+        - ./.yarn-cache
+        - ./node_modules
+      restore: true
+    volumes:
+      - name: 2f746d702f6361636865
+        path: /cache
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: getSaleorDevConfig
+    pull: if-not-exists
+    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+    commands:
+      - gcloud source repos clone configs ../configs
+      - cp ../configs/saleor-mirror/dev/readr/config.Saleor.js ./configs/config.js
+      - cp ../configs/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
+    environment:
+      GOOGLE_CREDENTIALS:
+        from_secret: google_credentials
+    when:
+      branch:
+        - master
+        - dev
+      event:
+        - push
+
+  - name: buildSaleorThenPublish
+    pull: if-not-exists
+    image: plugins/gcr
+    settings:
+      repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
+      tag: ${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_Saleor
+    environment:
+      DOCKER_LAUNCH_DEBUG: true
+      GOOGLE_CREDENTIALS:
+        from_secret: google_credentials
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: deploySaleorDev
+    pull: if-not-exists
+    image: nytimes/drone-gke
+    settings:
+      cluster: dev
+      namespace: default
+      vars:
+        app: ${DRONE_REPO_NAME}-saleor-mirror
+        image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_saleor-mirror
+        tier: backend
+      verbose: true
+      zone: asia-east1-a
+    environment:
+      TOKEN:
+        from_secret: google_credentials
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: getGraphQLDevConfig
+    pull: if-not-exists
+    image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
+    commands:
+      - cp ../configs/saleor-mirror/ ./configs/config.js
+      - cp ../configs/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
+    environment:
+      GOOGLE_CREDENTIALS:
+        from_secret: google_credentials
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: buildGraphQLThenPublish
+    pull: if-not-exists
+    image: plugins/gcr
+    settings:
+      repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
+      tag: ${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_graphql
+    environment:
+      DOCKER_LAUNCH_DEBUG: true
+      GOOGLE_CREDENTIALS:
+        from_secret: google_credentials
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: deployGraphQLDev
+    pull: if-not-exists
+    image: nytimes/drone-gke
+    settings:
+      cluster: dev
+      namespace: default
+      vars:
+        app: ${DRONE_REPO_NAME}-graphql
+        image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_graphql
+        tier: backend
+      verbose: true
+      zone: asia-east1-a
+    environment:
+      TOKEN:
+        from_secret: google_credentials
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+
+  - name: rebuildCache
+    pull: if-not-exists
+    image: drillster/drone-volume-cache
+    settings:
+      mount:
+        - ./.yarn-cache
+        - ./node_modules
+      rebuild: true
+    volumes:
+      - name: 2f746d702f6361636865
+        path: /cache
+    when:
+      branch:
+        - dev
+        - master
+
+  - name: finishSlack
+    pull: if-not-exists
+    image: plugins/slack
+    settings:
+      channel: jenkins
+      icon_url: https://avatars2.githubusercontent.com/u/2181346?s=200&v=4
+      template: "{{#success build.status}}\n  *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.\n  Check out our new <https://saleorbackend-dev.mirrormedia.mg/admin|Saleor Backend>.\n{{else}}\n  Houston, we have a problem. Build <${DRONE_BUILD_LINK}|#{{build.number}}> failed.\n{{/success}}\n"
+      username: drone
+    environment:
+      SLACK_WEBHOOK:
+        from_secret: slack_webhook
+    when:
+      branch:
+        - dev
+        - master
+      event:
+        - push
+      status:
+        - success
+        - failure
