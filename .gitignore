@@ -34,3 +34,5 @@ dist/
 .idea/
 # Exported results file
 django-queries-results.html
+configs/*
+venv/
