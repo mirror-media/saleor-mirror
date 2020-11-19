@@ -15,7 +15,7 @@ from django.core.management.utils import get_random_secret_key
 from pytimeparse import parse
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
-
+from google.oauth2 import service_account
 
 def get_list(text):
     return [item.strip() for item in text.split(",")]
@@ -355,6 +355,7 @@ GS_PROJECT_ID = os.environ.get("GS_PROJECT_ID")
 GS_STORAGE_BUCKET_NAME = os.environ.get("GS_STORAGE_BUCKET_NAME")
 GS_MEDIA_BUCKET_NAME = os.environ.get("GS_MEDIA_BUCKET_NAME")
 GS_AUTO_CREATE_BUCKET = get_bool_from_env("GS_AUTO_CREATE_BUCKET", False)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(PROJECT_ROOT,'configs/gcskeyfile.json'))
 
 # If GOOGLE_APPLICATION_CREDENTIALS is set there is no need to load OAuth token
 # See https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
