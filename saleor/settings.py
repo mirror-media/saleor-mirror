@@ -68,8 +68,8 @@ DATABASES = {
 }
 
 
-TIME_ZONE = "UTC"
-LANGUAGE_CODE = "en"
+TIME_ZONE = "Asia/Taipei"
+LANGUAGE_CODE = "zh-hant"
 LANGUAGES = [
     ("en", "English"),
     ("zh-hant", "Traditional Chinese"),
