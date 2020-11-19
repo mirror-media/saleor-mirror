@@ -360,17 +360,15 @@ GS_AUTO_CREATE_BUCKET = get_bool_from_env("GS_AUTO_CREATE_BUCKET", False)
 if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
     GS_CREDENTIALS = os.environ.get("GS_CREDENTIALS")
 
-if AWS_STORAGE_BUCKET_NAME:
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-elif GS_STORAGE_BUCKET_NAME:
-    STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 
-if AWS_MEDIA_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = "saleor.core.storages.S3MediaStorage"
-    THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
-elif GS_MEDIA_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = "saleor.core.storages.GCSMediaStorage"
-    THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
+STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+
+
+DEFAULT_FILE_STORAGE = "saleor.core.storages.S3MediaStorage"
+THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
+
+DEFAULT_FILE_STORAGE = "saleor.core.storages.GCSMediaStorage"
+THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "products": [
