@@ -40,7 +40,7 @@ WORKDIR /app
 
 ARG STATIC_URL
 ENV STATIC_URL ${STATIC_URL:-/static/}
-
+RUN gcloud config set project mirrormedia-1470651750304
 RUN SECRET_KEY=dummy STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
 
 EXPOSE 8000
