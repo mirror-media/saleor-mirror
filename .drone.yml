@@ -31,8 +31,8 @@ pipeline:
     secrets: [google_credentials]
     commands:
       - gcloud source repos clone configs ../configs
-      - cp ../configs/saleor-mirror/dev/readr/config.Saleor.js ./configs/config.js
-      - cp ../configs/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
+      - cp ../configs/mirror-media/saleor-mirror/dev/config.py ./configs/config.py
+      - cp ../configs/mirror-media/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
     when:
       event: [push]
       branch: [master, dev]
