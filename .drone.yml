@@ -46,6 +46,7 @@ pipeline:
       - DOCKER_LAUNCH_DEBUG=true
       - DEFAULT_FROM_EMAIL=noreply@mirrormedia.mg
       - CELERY_BROKER_URL=redis://35.229.222.166:6379/
+      - GOOGLE_CLOUD_PROJECT=mirrormedia-1470651750304
       - GS_PROJECT_ID=mirrormedia-1470651750304
       - GS_STORAGE_BUCKET_NAME=mirrormedia-files
       - REDIS_URL=redis://35.229.222.166:6379/
