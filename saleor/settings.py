@@ -350,17 +350,17 @@ ALLOWED_GRAPHQL_ORIGINS = get_list(os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*"
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Google Cloud Storage configuration
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(PROJECT_ROOT,'configs/gcskeyfile.json'))
 GOOGLE_CLOUD_PROJECT = os.environ.get('GOOGLE_CLOUD_PROJECT')
 GS_PROJECT_ID = os.environ.get("GS_PROJECT_ID")
 GS_STORAGE_BUCKET_NAME = os.environ.get("GS_STORAGE_BUCKET_NAME")
 GS_MEDIA_BUCKET_NAME = os.environ.get("GS_MEDIA_BUCKET_NAME")
 GS_AUTO_CREATE_BUCKET = get_bool_from_env("GS_AUTO_CREATE_BUCKET", False)
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(os.path.join(PROJECT_ROOT,'configs/gcskeyfile.json'))
 
 # If GOOGLE_APPLICATION_CREDENTIALS is set there is no need to load OAuth token
 # See https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
-if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-    GS_CREDENTIALS = os.environ.get("GS_CREDENTIALS")
+# if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
+#     GS_CREDENTIALS = os.environ.get("GS_CREDENTIALS")
 
 
 STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
