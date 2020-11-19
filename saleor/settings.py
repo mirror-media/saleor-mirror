@@ -363,14 +363,14 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 #     GS_CREDENTIALS = os.environ.get("GS_CREDENTIALS")
 
 
-STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+# STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 
 
-DEFAULT_FILE_STORAGE = "saleor.core.storages.S3MediaStorage"
-THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
+# DEFAULT_FILE_STORAGE = "saleor.core.storages.S3MediaStorage"
+# THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
 
-DEFAULT_FILE_STORAGE = "saleor.core.storages.GCSMediaStorage"
-THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
+# DEFAULT_FILE_STORAGE = "saleor.core.storages.GCSMediaStorage"
+# THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "products": [
