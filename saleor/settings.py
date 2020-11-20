@@ -4,6 +4,7 @@ import warnings
 from datetime import timedelta
 
 import dj_database_url
+from configs.configs import database_url_config_dev
 import dj_email_url
 import django_cache_url
 import jaeger_client
@@ -61,10 +62,10 @@ ALLOWED_CLIENT_HOSTS = get_list(ALLOWED_CLIENT_HOSTS)
 
 INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
 
+
 DATABASES = {
-    "default": dj_database_url.config(
-        default="postgres://saleor:saleor@localhost:5432/saleor", conn_max_age=600
-    )
+    # "default": dj_database_url.config(default="postgres://saleor:saleor@localhost:5432/saleor", conn_max_age=600)
+        "default": database_url_config_dev
 }
 
 
@@ -449,7 +450,7 @@ PLUGINS_MANAGER = "saleor.plugins.manager.PluginsManager"
 PLUGINS = [
     "saleor.plugins.avatax.plugin.AvataxPlugin",
     "saleor.plugins.vatlayer.plugin.VatlayerPlugin",
-    "saleor.plugins.webhook.plugin.WebhookPlugin",
+    # "saleor.plugins.webhook.plugin.WebhookPlugin",
     "saleor.payment.gateways.dummy.plugin.DummyGatewayPlugin",
     "saleor.payment.gateways.dummy_credit_card.plugin.DummyCreditCardGatewayPlugin",
     "saleor.payment.gateways.stripe.plugin.StripeGatewayPlugin",
