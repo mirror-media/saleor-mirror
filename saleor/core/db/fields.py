@@ -1,7 +1,7 @@
 import json
 from typing import Callable
 
-from django.db.models import JSONField  # type: ignore
+from django.contrib.postgres.fields import JSONField  # type: ignore
 
 
 class SanitizedJSONField(JSONField):
