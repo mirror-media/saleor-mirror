@@ -2,7 +2,7 @@ import datetime
 from typing import Any
 
 from django.db import models
-from django.db.models import JSONField  # type: ignore
+from django.contrib.postgres.fields import JSONField  # type: ignore
 from django.db.models import F, Max, Q
 
 from . import JobStatus

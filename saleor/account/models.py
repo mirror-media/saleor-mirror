@@ -9,7 +9,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
-from django.db.models import JSONField  # type: ignore
+from django.contrib.postgres.fields import JSONField  # type: ignore
 from django.db.models import Q, QuerySet, Value
 from django.forms.models import model_to_dict
 from django.utils import timezone
