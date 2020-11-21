@@ -32,9 +32,9 @@ pipeline:
     commands:
       - gcloud source repos clone configs ../configs
       - mkdir configs
-      - cp /drone/configs/mirror-media/saleor-mirror/dev/configs.py ./configs/configs.py
-      - cp /drone/configs/gcskeyfile.json ./configs/gcskeyfile.json
-      - rm -rf /drone/configs
+      - cp ../configs/mirror-media/saleor-mirror/dev/configs.py ./configs/configs.py
+      - cp ../configs/gcskeyfile.json ./configs/gcskeyfile.json
+      - rm -rf ../configs
     when:
       event: [push]
       branch: [master, dev]
