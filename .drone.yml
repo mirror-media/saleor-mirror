@@ -48,6 +48,7 @@ pipeline:
       # - gcloud config set project mirrormedia-1470651750304
     environment:
       - DOCKER_LAUNCH_DEBUG=true
+      - ALLOWED_HOSTS=localhost,127.0.0.1,35.185.133.209
       - DEFAULT_FROM_EMAIL=noreply@mirrormedia.mg
       - CELERY_BROKER_URL=redis://35.229.222.166:6379/
       - GOOGLE_CLOUD_PROJECT=mirrormedia-1470651750304
