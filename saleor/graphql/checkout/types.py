@@ -13,7 +13,7 @@ from ..core.scalars import UUID
 from ..core.types.money import TaxedMoney
 from ..decorators import permission_required
 from ..discount.dataloaders import DiscountsByDateTimeLoader
-from ..giftcard.types import GiftCard
+# from ..giftcard.types import GiftCard
 from ..meta.deprecated.resolvers import resolve_meta, resolve_private_meta
 from ..meta.types import ObjectWithMetadata
 from ..shipping.types import ShippingMethod
@@ -96,9 +96,9 @@ class Checkout(CountableDjangoObjectType):
         required=True,
     )
     email = graphene.String(description="Email of a customer.", required=True)
-    gift_cards = graphene.List(
-        GiftCard, description="List of gift cards associated with this checkout."
-    )
+    # gift_cards = graphene.List(
+    #     GiftCard, description="List of gift cards associated with this checkout."
+    # )
     is_shipping_required = graphene.Boolean(
         description="Returns True, if checkout requires shipping.", required=True
     )

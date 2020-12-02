@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from ....checkout.models import Checkout
 from ....discount.models import Voucher
-from ....giftcard.models import GiftCard
+# from ....giftcard.models import GiftCard
 from ....order.models import Order, OrderLine
 from ....payment.models import Payment, Transaction
 from ....product.models import Product, ProductVariant
@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
         Checkout.objects.update(currency=currency)
         Voucher.objects.update(currency=currency)
-        GiftCard.objects.update(currency=currency)
+        # GiftCard.objects.update(currency=currency)
         Order.objects.update(currency=currency)
         OrderLine.objects.update(currency=currency)
         Payment.objects.update(currency=currency)

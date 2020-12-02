@@ -6,7 +6,7 @@ from ....checkout.error_codes import CheckoutErrorCode
 from ....core.error_codes import MetadataErrorCode, ShopErrorCode, TranslationErrorCode
 from ....csv.error_codes import ExportErrorCode
 from ....discount.error_codes import DiscountErrorCode
-from ....giftcard.error_codes import GiftCardErrorCode
+# from ....giftcard.error_codes import GiftCardErrorCode
 from ....invoice.error_codes import InvoiceErrorCode
 from ....menu.error_codes import MenuErrorCode
 from ....order.error_codes import OrderErrorCode
@@ -50,7 +50,7 @@ SALEOR_ERROR_CODE_ENUMS = [
     ExportErrorCode,
     DiscountErrorCode,
     PluginErrorCode,
-    GiftCardErrorCode,
+    # GiftCardErrorCode,
     InvoiceErrorCode,
     MenuErrorCode,
     MetadataErrorCode,

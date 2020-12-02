@@ -193,10 +193,10 @@ class User(CountableDjangoObjectType):
     checkout = graphene.Field(
         Checkout, description="Returns the last open checkout of this user."
     )
-    gift_cards = PrefetchingConnectionField(
-        "saleor.graphql.giftcard.types.GiftCard",
-        description="List of the user gift cards.",
-    )
+    # gift_cards = PrefetchingConnectionField(
+    #     "saleor.graphql.giftcard.types.GiftCard",
+    #     description="List of the user gift cards.",
+    # )
     note = graphene.String(description="A note about the customer.")
     orders = PrefetchingConnectionField(
         "saleor.graphql.order.types.Order", description="List of user's orders."

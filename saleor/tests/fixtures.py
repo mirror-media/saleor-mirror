@@ -41,7 +41,7 @@ from ..discount.models import (
     VoucherCustomer,
     VoucherTranslation,
 )
-from ..giftcard.models import GiftCard
+# from ..giftcard.models import GiftCard
 from ..invoice.models import Invoice
 from ..menu.models import Menu, MenuItem, MenuItemTranslation
 from ..order import OrderStatus
@@ -1322,32 +1322,32 @@ def order_line_with_one_allocation(customer_user, variant_with_many_stocks):
     return order_line
 
 
-@pytest.fixture
-def gift_card(customer_user, staff_user):
-    return GiftCard.objects.create(
-        code="mirumee_giftcard",
-        user=customer_user,
-        initial_balance=Money(10, "USD"),
-        current_balance=Money(10, "USD"),
-    )
+# @pytest.fixture
+# def gift_card(customer_user, staff_user):
+#     return GiftCard.objects.create(
+#         code="mirumee_giftcard",
+#         user=customer_user,
+#         initial_balance=Money(10, "USD"),
+#         current_balance=Money(10, "USD"),
+#     )
 
 
-@pytest.fixture
-def gift_card_used(staff_user):
-    return GiftCard.objects.create(
-        code="gift_card_used",
-        initial_balance=Money(150, "USD"),
-        current_balance=Money(100, "USD"),
-    )
+# @pytest.fixture
+# def gift_card_used(staff_user):
+#     return GiftCard.objects.create(
+#         code="gift_card_used",
+#         initial_balance=Money(150, "USD"),
+#         current_balance=Money(100, "USD"),
+#     )
 
 
-@pytest.fixture
-def gift_card_created_by_staff(staff_user):
-    return GiftCard.objects.create(
-        code="mirumee_staff",
-        initial_balance=Money(5, "USD"),
-        current_balance=Money(5, "USD"),
-    )
+# @pytest.fixture
+# def gift_card_created_by_staff(staff_user):
+#     return GiftCard.objects.create(
+#         code="mirumee_staff",
+#         initial_balance=Money(5, "USD"),
+#         current_balance=Money(5, "USD"),
+#     )
 
 
 @pytest.fixture

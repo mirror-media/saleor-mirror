@@ -17,7 +17,7 @@ from ..core.models import ModelWithMetadata
 from ..core.permissions import CheckoutPermissions
 from ..core.taxes import zero_money
 from ..core.weight import zero_weight
-from ..giftcard.models import GiftCard
+# from ..giftcard.models import GiftCard
 from ..shipping.models import ShippingMethod
 
 if TYPE_CHECKING:
@@ -94,7 +94,7 @@ class Checkout(ModelWithMetadata):
 
     translated_discount_name = models.CharField(max_length=255, blank=True, null=True)
     voucher_code = models.CharField(max_length=12, blank=True, null=True)
-    gift_cards = models.ManyToManyField(GiftCard, blank=True, related_name="checkouts")
+    # gift_cards = models.ManyToManyField(GiftCard, blank=True, related_name="checkouts")
 
     redirect_url = models.URLField(blank=True, null=True)
     tracking_code = models.CharField(max_length=255, blank=True, null=True)

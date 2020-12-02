@@ -186,7 +186,7 @@ INSTALLED_APPS = [
     "saleor.plugins",
     "saleor.account",
     "saleor.discount",
-    "saleor.giftcard",
+    # "saleor.giftcard",
     "saleor.product",
     "saleor.checkout",
     "saleor.core",

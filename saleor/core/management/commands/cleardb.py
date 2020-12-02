@@ -12,7 +12,7 @@ from django.db.models import Q
 from ....account.models import User
 from ....checkout.models import Checkout
 from ....discount.models import Sale, Voucher
-from ....giftcard.models import GiftCard
+# from ....giftcard.models import GiftCard
 from ....order.models import Order
 from ....page.models import Page
 from ....payment.models import Payment, Transaction
@@ -81,8 +81,8 @@ class Command(BaseCommand):
         Voucher.objects.all().delete()
         self.stdout.write("Removed vouchers")
 
-        GiftCard.objects.all().delete()
-        self.stdout.write("Removed gift cards")
+        # GiftCard.objects.all().delete()
+        # self.stdout.write("Removed gift cards")
 
         self.stdout.write("Removed warehouses")
         Warehouse.objects.all().delete()

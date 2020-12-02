@@ -13,7 +13,7 @@ from ..core.exceptions import ProductNotPublished
 from ..core.prices import quantize_price
 from ..core.taxes import zero_taxed_money
 from ..core.utils.promo_code import (
-    InvalidPromoCode,
+    # InvalidPromoCode,
     promo_code_is_gift_card,
     promo_code_is_voucher,
 )
@@ -24,10 +24,10 @@ from ..discount.utils import (
     get_products_voucher_discount,
     validate_voucher_for_checkout,
 )
-from ..giftcard.utils import (
-    add_gift_card_code_to_checkout,
-    remove_gift_card_code_from_checkout,
-)
+# from ..giftcard.utils import (
+#     add_gift_card_code_to_checkout,
+#     remove_gift_card_code_from_checkout,
+# )
 from ..plugins.manager import get_plugins_manager
 from ..shipping.models import ShippingMethod
 from ..warehouse.availability import check_stock_quantity
@@ -320,22 +320,22 @@ def recalculate_checkout_discount(
         remove_voucher_from_checkout(checkout)
 
 
-def add_promo_code_to_checkout(
-    checkout: Checkout,
-    lines: Iterable[CheckoutLine],
-    promo_code: str,
-    discounts: Optional[Iterable[DiscountInfo]] = None,
-):
-    """Add gift card or voucher data to checkout.
-
-    Raise InvalidPromoCode if promo code does not match to any voucher or gift card.
-    """
-    if promo_code_is_voucher(promo_code):
-        add_voucher_code_to_checkout(checkout, lines, promo_code, discounts)
-    elif promo_code_is_gift_card(promo_code):
-        add_gift_card_code_to_checkout(checkout, promo_code)
-    else:
-        raise InvalidPromoCode()
+# def add_promo_code_to_checkout(
+#     checkout: Checkout,
+#     lines: Iterable[CheckoutLine],
+#     promo_code: str,
+#     discounts: Optional[Iterable[DiscountInfo]] = None,
+# ):
+#     """Add gift card or voucher data to checkout.
+#
+#     Raise InvalidPromoCode if promo code does not match to any voucher or gift card.
+#     """
+#     if promo_code_is_voucher(promo_code):
+#         add_voucher_code_to_checkout(checkout, lines, promo_code, discounts)
+#     elif promo_code_is_gift_card(promo_code):
+#         add_gift_card_code_to_checkout(checkout, promo_code)
+#     else:
+#         raise InvalidPromoCode()
 
 
 def add_voucher_code_to_checkout(

@@ -8,7 +8,7 @@ from ..enums import (
     CheckoutErrorCode,
     DiscountErrorCode,
     ExportErrorCode,
-    GiftCardErrorCode,
+    # GiftCardErrorCode,
     InvoiceErrorCode,
     JobStatusEnum,
     MenuErrorCode,
@@ -194,8 +194,8 @@ class PaymentError(Error):
     code = PaymentErrorCode(description="The error code.", required=True)
 
 
-class GiftCardError(Error):
-    code = GiftCardErrorCode(description="The error code.", required=True)
+# class GiftCardError(Error):
+#     code = GiftCardErrorCode(description="The error code.", required=True)
 
 
 class PluginError(Error):

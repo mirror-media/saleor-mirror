@@ -19,7 +19,7 @@ from ..core.connection import CountableDjangoObjectType
 from ..core.types.common import Image
 from ..core.types.money import Money, TaxedMoney
 from ..decorators import one_of_permissions_required, permission_required
-from ..giftcard.types import GiftCard
+# from ..giftcard.types import GiftCard
 from ..invoice.types import Invoice
 from ..meta.deprecated.resolvers import resolve_meta, resolve_private_meta
 from ..meta.types import ObjectWithMetadata
@@ -346,7 +346,7 @@ class Order(CountableDjangoObjectType):
     subtotal = graphene.Field(
         TaxedMoney, description="The sum of line prices not including shipping."
     )
-    gift_cards = graphene.List(GiftCard, description="List of user gift cards.")
+    # gift_cards = graphene.List(GiftCard, description="List of user gift cards.")
     status_display = graphene.String(description="User-friendly order status.")
     can_finalize = graphene.Boolean(
         description=(

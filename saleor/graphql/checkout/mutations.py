@@ -10,7 +10,7 @@ from ...checkout import models
 from ...checkout.complete_checkout import complete_checkout
 from ...checkout.error_codes import CheckoutErrorCode
 from ...checkout.utils import (
-    add_promo_code_to_checkout,
+    # add_promo_code_to_checkout,
     add_variant_to_checkout,
     change_billing_address_in_checkout,
     change_shipping_address_in_checkout,

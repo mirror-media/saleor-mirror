@@ -12,7 +12,7 @@ from django.test import RequestFactory, override_settings
 from ...account.models import Address, User
 from ...account.utils import create_superuser
 from ...discount.models import Sale, Voucher
-from ...giftcard.models import GiftCard
+# from ...giftcard.models import GiftCard
 from ...order.models import Order
 from ...product.models import ProductImage, ProductType
 from ...shipping.models import ShippingZone
@@ -163,11 +163,11 @@ def test_create_vouchers(db):
     assert Voucher.objects.all().count() == 3
 
 
-def test_create_gift_card(db):
-    assert GiftCard.objects.count() == 0
-    for _ in random_data.create_gift_card():
-        pass
-    assert GiftCard.objects.count() == 1
+# def test_create_gift_card(db):
+#     assert GiftCard.objects.count() == 0
+#     for _ in random_data.create_gift_card():
+#         pass
+#     assert GiftCard.objects.count() == 1
 
 
 @override_settings(VERSATILEIMAGEFIELD_SETTINGS={"create_images_on_demand": False})

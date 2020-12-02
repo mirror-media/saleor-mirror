@@ -27,7 +27,7 @@ from ...checkout import AddressType
 from ...core.permissions import (
     AccountPermissions,
     CheckoutPermissions,
-    GiftcardPermissions,
+    # GiftcardPermissions,
     OrderPermissions,
     get_permissions,
 )
@@ -36,7 +36,7 @@ from ...core.weight import zero_weight
 from ...discount import DiscountValueType, VoucherType
 from ...discount.models import Sale, Voucher
 from ...discount.utils import fetch_discounts
-from ...giftcard.models import GiftCard
+# from ...giftcard.models import GiftCard
 from ...menu.models import Menu
 from ...order.models import Fulfillment, Order, OrderLine
 from ...order.utils import update_order_status
@@ -1026,22 +1026,22 @@ def create_vouchers():
         yield "Value voucher already exists"
 
 
-def create_gift_card():
-    user = random.choice(
-        [User.objects.filter(is_superuser=False).order_by("?").first()]
-    )
-    gift_card, created = GiftCard.objects.get_or_create(
-        code="Gift_card_10",
-        defaults={
-            "user": user,
-            "initial_balance": Money(10, settings.DEFAULT_CURRENCY),
-            "current_balance": Money(10, settings.DEFAULT_CURRENCY),
-        },
-    )
-    if created:
-        yield "Gift card #%d" % gift_card.id
-    else:
-        yield "Gift card already exists"
+# def create_gift_card():
+#     user = random.choice(
+#         [User.objects.filter(is_superuser=False).order_by("?").first()]
+#     )
+#     gift_card, created = GiftCard.objects.get_or_create(
+#         code="Gift_card_10",
+#         defaults={
+#             "user": user,
+#             "initial_balance": Money(10, settings.DEFAULT_CURRENCY),
+#             "current_balance": Money(10, settings.DEFAULT_CURRENCY),
+#         },
+#     )
+#     if created:
+#         yield "Gift card #%d" % gift_card.id
+#     else:
+#         yield "Gift card already exists"
 
 
 def set_homepage_collection():
