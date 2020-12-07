@@ -4,7 +4,7 @@ import warnings
 from datetime import timedelta
 
 import dj_database_url
-from configs.configs import database_url_config_dev
+from configs.configs import DB_DEV, _SECRET_KEY
 import dj_email_url
 import django_cache_url
 import jaeger_client
@@ -65,7 +65,7 @@ INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
 
 DATABASES = {
     # "default": dj_database_url.config(default="postgres://saleor:saleor@localhost:5432/saleor", conn_max_age=600)
-        "default": database_url_config_dev
+        "default": dj_database_url.config(default=DB_DEV,conn_max_age=600)
 }
 
 
@@ -154,7 +154,7 @@ TEMPLATES = [
 ]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = _SECRET_KEY
 
 if not SECRET_KEY and DEBUG:
     warnings.warn("SECRET_KEY not configured, using a random temporary key.")

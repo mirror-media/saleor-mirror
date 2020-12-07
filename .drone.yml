@@ -78,45 +78,6 @@ pipeline:
       event: [push]
       branch: [dev, master]
 
-  # getGraphQLDevConfig:
-  #   image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
-  #   secrets: [google_credentials]
-  #   commands:
-  #     # - gcloud source repos clone configs ../configs
-  #     - cp ../configs/saleor-mirror/ ./configs/config.js
-  #     # - cp ../configs/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
-  #   when:
-  #     event: [push]
-  #     branch: [dev, master]
-
-  # buildGraphQLThenPublish:
-  #   image: plugins/gcr
-  #   repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
-  #   tag: ${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_graphql
-  #   environment:
-  #     - DOCKER_LAUNCH_DEBUG=true
-  #   secrets: [google_credentials]
-  #   when:
-  #     event: [push]
-  #     branch: [dev, master]
-
-  # deployGraphQLDev:
-  #   image: nytimes/drone-gke
-  #   zone: asia-east1-a
-  #   cluster: dev
-  #   namespace: default
-  #   verbose: true
-  #   secrets:
-  #     - source: google_credentials
-  #       target: token
-  #   vars:
-  #     image: gcr.io/mirrormedia-1470651750304/${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_graphql
-  #     app: ${DRONE_REPO_NAME}-graphql
-  #     tier: backend
-  #   when:
-  #     event: [push]
-  #     branch: [dev, master]
-
   rebuildCache:
     image: drillster/drone-volume-cache
     rebuild: true
