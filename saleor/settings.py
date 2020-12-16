@@ -443,6 +443,8 @@ GRAPHENE = {
         "saleor.graphql.middleware.JWTMiddleware",
         "saleor.graphql.middleware.app_middleware",
     ],
+    "SCHEMA": "saleor.graphql.api.schema",
+    "SCHEMA_OUTPUT": './saleor/graphql/schema.graphql',
 }
 
 PLUGINS_MANAGER = "saleor.plugins.manager.PluginsManager"
