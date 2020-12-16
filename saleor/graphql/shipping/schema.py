@@ -3,7 +3,7 @@ import graphene
 from ...core.permissions import ShippingPermissions
 from ..core.fields import PrefetchingConnectionField
 from ..decorators import permission_required
-from ..translations.mutations import ShippingPriceTranslate
+# from ..translations.mutations import ShippingPriceTranslate
 from .bulk_mutations import ShippingPriceBulkDelete, ShippingZoneBulkDelete
 from .mutations import (
     ShippingPriceCreate,
@@ -43,7 +43,7 @@ class ShippingMutations(graphene.ObjectType):
     shipping_price_delete = ShippingPriceDelete.Field()
     shipping_price_bulk_delete = ShippingPriceBulkDelete.Field()
     shipping_price_update = ShippingPriceUpdate.Field()
-    shipping_price_translate = ShippingPriceTranslate.Field()
+    # shipping_price_translate = ShippingPriceTranslate.Field()
 
     shipping_zone_create = ShippingZoneCreate.Field()
     shipping_zone_delete = ShippingZoneDelete.Field()

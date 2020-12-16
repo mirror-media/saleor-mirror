@@ -1,7 +1,7 @@
 import graphene
 
 from ..core.fields import FilterInputConnectionField
-from ..translations.mutations import PageTranslate
+# from ..translations.mutations import PageTranslate
 from .bulk_mutations import PageBulkDelete, PageBulkPublish
 from .filters import PageFilterInput
 from .mutations import PageCreate, PageDelete, PageUpdate
@@ -37,4 +37,4 @@ class PageMutations(graphene.ObjectType):
     page_bulk_delete = PageBulkDelete.Field()
     page_bulk_publish = PageBulkPublish.Field()
     page_update = PageUpdate.Field()
-    page_translate = PageTranslate.Field()
+    # page_translate = PageTranslate.Field()

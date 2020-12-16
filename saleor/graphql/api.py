@@ -6,7 +6,6 @@ from .checkout.schema import CheckoutMutations, CheckoutQueries
 from .core.schema import CoreQueries
 from .csv.schema import CsvMutations, CsvQueries
 from .discount.schema import DiscountMutations, DiscountQueries
-# from .giftcard.schema import GiftCardMutations, GiftCardQueries
 from .invoice.schema import InvoiceMutations
 from .menu.schema import MenuMutations, MenuQueries
 from .meta.schema import MetaMutations
@@ -16,55 +15,54 @@ from .payment.schema import PaymentMutations, PaymentQueries
 from .plugins.schema import PluginsMutations, PluginsQueries
 from .product.schema import ProductMutations, ProductQueries
 from .shipping.schema import ShippingMutations, ShippingQueries
-from .shop.schema import ShopMutations, ShopQueries
+# from .shop.schema import ShopMutations, ShopQueries
 from .translations.schema import TranslationQueries
 from .warehouse.schema import StockQueries, WarehouseMutations, WarehouseQueries
 from .webhook.schema import WebhookMutations, WebhookQueries
-
+from .user.schema import UserMutations, UserQueries
 
 class Query(
     AccountQueries,
-    AppQueries,
-    CheckoutQueries,
-    CoreQueries,
-    CsvQueries,
-    DiscountQueries,
-    PluginsQueries,
-    # GiftCardQueries,
-    MenuQueries,
-    OrderQueries,
-    PageQueries,
-    PaymentQueries,
-    ProductQueries,
-    ShippingQueries,
-    ShopQueries,
-    StockQueries,
-    TranslationQueries,
-    WarehouseQueries,
-    WebhookQueries,
+    # AppQueries,
+    # CheckoutQueries,
+    # CoreQueries,
+    # CsvQueries,
+    # DiscountQueries,
+    # PluginsQueries,
+    # MenuQueries,
+    # OrderQueries,
+    # PageQueries,
+    # PaymentQueries,
+    # ProductQueries,
+    # ShippingQueries,
+    # ShopQueries,
+    # StockQueries,
+    # TranslationQueries,
+    # WarehouseQueries,
+    # WebhookQueries,
 ):
     pass
 
 
 class Mutation(
     AccountMutations,
-    AppMutations,
-    CheckoutMutations,
-    CsvMutations,
-    DiscountMutations,
-    PluginsMutations,
+    # AppMutations,
+    # CheckoutMutations,
+    # CsvMutations,
+    # DiscountMutations,
+    # PluginsMutations,
     # GiftCardMutations,
-    InvoiceMutations,
-    MenuMutations,
-    MetaMutations,
-    OrderMutations,
-    PageMutations,
-    PaymentMutations,
-    ProductMutations,
-    ShippingMutations,
-    ShopMutations,
-    WarehouseMutations,
-    WebhookMutations,
+    # InvoiceMutations,
+    # MenuMutations,
+    # MetaMutations,
+    # OrderMutations,
+    # PageMutations,
+    # PaymentMutations,
+    # ProductMutations,
+    # ShippingMutations,
+    # ShopMutations,
+    # WarehouseMutations,
+    # WebhookMutations,
 ):
     pass
 

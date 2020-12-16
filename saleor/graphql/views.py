@@ -33,6 +33,11 @@ API_PATH = SimpleLazyObject(lambda: reverse("api"))
 unhandled_errors_logger = logging.getLogger("saleor.graphql.errors.unhandled")
 handled_errors_logger = logging.getLogger("saleor.graphql.errors.handled")
 
+class ReadOnlyException(Exception):
+    def __init__(self, msg=None):
+        if msg is None:
+            msg = "API runs in read-only mode"
+        super().__init__(msg)
 
 def tracing_wrapper(execute, sql, params, many, context):
     conn: DatabaseWrapper = context["connection"]

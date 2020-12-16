@@ -54,7 +54,8 @@ class AddressQueryset(models.QuerySet):
 class Address(models.Model):
     first_name = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256, blank=True)
-    company_name = models.CharField(max_length=256, blank=True)
+    # company_name = models.CharField(max_length=256, blank=True)
+    gender = models.CharField(max_length=10, blank=True)
     street_address_1 = models.CharField(max_length=256, blank=True)
     street_address_2 = models.CharField(max_length=256, blank=True)
     city = models.CharField(max_length=256, blank=True)
@@ -62,7 +63,7 @@ class Address(models.Model):
     postal_code = models.CharField(max_length=20, blank=True)
     country = CountryField()
     country_area = models.CharField(max_length=128, blank=True)
-    phone = PossiblePhoneNumberField(blank=True, default="")
+    # phone = models.CharField(max_length=256, blank=True)
 
     objects = AddressQueryset.as_manager()
 
@@ -74,8 +75,6 @@ class Address(models.Model):
         return "%s %s" % (self.first_name, self.last_name)
 
     def __str__(self):
-        if self.company_name:
-            return "%s - %s" % (self.company_name, self.full_name)
         return self.full_name
 
     def __eq__(self, other):
@@ -134,12 +133,13 @@ class UserManager(BaseUserManager):
 
 
 class User(PermissionsMixin, ModelWithMetadata, AbstractBaseUser):
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     first_name = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256, blank=True)
     addresses = models.ManyToManyField(
         Address, blank=True, related_name="user_addresses"
     )
+    phone = PhoneNumberField(max_length=100, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     note = models.TextField(null=True, blank=True)

@@ -5,14 +5,14 @@ from ..core.enums import ReportingPeriod
 from ..core.fields import FilterInputConnectionField, PrefetchingConnectionField
 from ..core.validators import validate_one_of_args_is_in_query
 from ..decorators import permission_required
-from ..translations.mutations import (
-    AttributeTranslate,
-    AttributeValueTranslate,
-    CategoryTranslate,
-    CollectionTranslate,
-    ProductTranslate,
-    ProductVariantTranslate,
-)
+# from ..translations.mutations import (
+#     AttributeTranslate,
+#     AttributeValueTranslate,
+#     CategoryTranslate,
+#     CollectionTranslate,
+#     ProductTranslate,
+#     ProductVariantTranslate,
+# )
 from .bulk_mutations.attributes import AttributeBulkDelete, AttributeValueBulkDelete
 from .bulk_mutations.products import (
     CategoryBulkDelete,
@@ -323,7 +323,7 @@ class ProductMutations(graphene.ObjectType):
     attribute_assign = AttributeAssign.Field()
     attribute_unassign = AttributeUnassign.Field()
     attribute_update = AttributeUpdate.Field()
-    attribute_translate = AttributeTranslate.Field()
+    # attribute_translate = AttributeTranslate.Field()
     attribute_update_metadata = AttributeUpdateMeta.Field(
         deprecation_reason=(
             "Use the `updateMetadata` mutation instead. This field will be removed "
@@ -353,14 +353,14 @@ class ProductMutations(graphene.ObjectType):
     attribute_value_delete = AttributeValueDelete.Field()
     attribute_value_bulk_delete = AttributeValueBulkDelete.Field()
     attribute_value_update = AttributeValueUpdate.Field()
-    attribute_value_translate = AttributeValueTranslate.Field()
+    # attribute_value_translate = AttributeValueTranslate.Field()
     attribute_reorder_values = AttributeReorderValues.Field()
 
     category_create = CategoryCreate.Field()
     category_delete = CategoryDelete.Field()
     category_bulk_delete = CategoryBulkDelete.Field()
     category_update = CategoryUpdate.Field()
-    category_translate = CategoryTranslate.Field()
+    # category_translate = CategoryTranslate.Field()
     category_update_metadata = CategoryUpdateMeta.Field(
         deprecation_reason=(
             "Use the `updateMetadata` mutation instead. This field will be removed "
@@ -394,7 +394,7 @@ class ProductMutations(graphene.ObjectType):
     collection_bulk_publish = CollectionBulkPublish.Field()
     collection_remove_products = CollectionRemoveProducts.Field()
     collection_update = CollectionUpdate.Field()
-    collection_translate = CollectionTranslate.Field()
+    # collection_translate = CollectionTranslate.Field()
     collection_update_metadata = CollectionUpdateMeta.Field(
         deprecation_reason=(
             "Use the `updateMetadata` mutation instead. This field will be removed "
@@ -425,7 +425,7 @@ class ProductMutations(graphene.ObjectType):
     product_bulk_delete = ProductBulkDelete.Field()
     product_bulk_publish = ProductBulkPublish.Field()
     product_update = ProductUpdate.Field()
-    product_translate = ProductTranslate.Field()
+    # product_translate = ProductTranslate.Field()
     product_update_metadata = ProductUpdateMeta.Field(
         deprecation_reason=(
             "Use the `updateMetadata` mutation instead. This field will be removed "
@@ -506,7 +506,7 @@ class ProductMutations(graphene.ObjectType):
     product_variant_stocks_update = ProductVariantStocksUpdate.Field()
     product_variant_update = ProductVariantUpdate.Field()
     product_variant_set_default = ProductVariantSetDefault.Field()
-    product_variant_translate = ProductVariantTranslate.Field()
+    # product_variant_translate = ProductVariantTranslate.Field()
     product_variant_update_metadata = ProductVariantUpdateMeta.Field(
         deprecation_reason=(
             "Use the `updateMetadata` mutation instead. This field will be removed "

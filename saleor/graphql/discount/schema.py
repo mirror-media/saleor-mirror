@@ -4,7 +4,7 @@ from ...core.permissions import DiscountPermissions
 from ..core.fields import FilterInputConnectionField
 from ..core.types import FilterInputObjectType
 from ..decorators import permission_required
-from ..translations.mutations import SaleTranslate, VoucherTranslate
+# from ..translations.mutations import SaleTranslate, VoucherTranslate
 from .bulk_mutations import SaleBulkDelete, VoucherBulkDelete
 from .filters import SaleFilter, VoucherFilter
 from .mutations import (
@@ -86,7 +86,7 @@ class DiscountMutations(graphene.ObjectType):
     sale_update = SaleUpdate.Field()
     sale_catalogues_add = SaleAddCatalogues.Field()
     sale_catalogues_remove = SaleRemoveCatalogues.Field()
-    sale_translate = SaleTranslate.Field()
+    # sale_translate = SaleTranslate.Field()
 
     voucher_create = VoucherCreate.Field()
     voucher_delete = VoucherDelete.Field()
@@ -94,4 +94,4 @@ class DiscountMutations(graphene.ObjectType):
     voucher_update = VoucherUpdate.Field()
     voucher_catalogues_add = VoucherAddCatalogues.Field()
     voucher_catalogues_remove = VoucherRemoveCatalogues.Field()
-    voucher_translate = VoucherTranslate.Field()
+    # voucher_translate = VoucherTranslate.Field()

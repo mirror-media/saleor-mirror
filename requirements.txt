@@ -201,3 +201,4 @@ webencodings==0.5.1
 websockets==8.1
 wrapt==1.12.1
 yarl==1.5.1
+django-firebase-authentication

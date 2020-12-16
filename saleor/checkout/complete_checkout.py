@@ -260,8 +260,8 @@ def _create_order(*, checkout: Checkout, order_data: dict, user: User) -> Order:
             allocate_stock(line, checkout.get_country(), line.quantity)
 
     # Add gift cards to the order
-    for gift_card in checkout.gift_cards.select_for_update():
-        total_price_left = add_gift_card_to_order(order, gift_card, total_price_left)
+    # for gift_card in checkout.gift_cards.select_for_update():
+    #     total_price_left = add_gift_card_to_order(order, gift_card, total_price_left)
 
     # assign checkout payments to the order
     checkout.payments.update(order=order)

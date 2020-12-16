@@ -74,7 +74,6 @@ class AddressForm(forms.ModelForm):
     AUTOCOMPLETE_MAPPING = [
         ("first_name", "given-name"),
         ("last_name", "family-name"),
-        ("company_name", "organization"),
         ("street_address_1", "address-line1"),
         ("street_address_2", "address-line2"),
         ("city", "address-level2"),
@@ -92,7 +91,6 @@ class AddressForm(forms.ModelForm):
         labels = {
             "first_name": "Given name",
             "last_name": "Family name",
-            "company_name": "Company or organization",
             "street_address_1": "Address",
             "street_address_2": "",
             "city": "City",

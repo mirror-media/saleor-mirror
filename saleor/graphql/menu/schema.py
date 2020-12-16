@@ -1,7 +1,7 @@
 import graphene
 
 from ..core.fields import FilterInputConnectionField
-from ..translations.mutations import MenuItemTranslate
+# from ..translations.mutations import MenuItemTranslate
 from .bulk_mutations import MenuBulkDelete, MenuItemBulkDelete
 from .filters import MenuFilterInput, MenuItemFilterInput
 from .mutations import (
@@ -72,5 +72,5 @@ class MenuMutations(graphene.ObjectType):
     menu_item_delete = MenuItemDelete.Field()
     menu_item_bulk_delete = MenuItemBulkDelete.Field()
     menu_item_update = MenuItemUpdate.Field()
-    menu_item_translate = MenuItemTranslate.Field()
+    # menu_item_translate = MenuItemTranslate.Field()
     menu_item_move = MenuItemMove.Field()
