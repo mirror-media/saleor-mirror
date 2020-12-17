@@ -41,7 +41,6 @@ class DeleteUpdate(MutationMixin, DeleteUpdate, DynamicArgsMixin, graphene.Mutat
     _required_args = ["id"]
 
 
-
 class UserMutations(graphene.ObjectType):
     register = mutations.Register.Field()
     verify_account = mutations.VerifyAccount.Field()
@@ -51,7 +50,7 @@ class UserMutations(graphene.ObjectType):
     password_set = mutations.PasswordSet.Field()
     password_change = mutations.PasswordChange.Field()
     archive_account = mutations.ArchiveAccount.Field()
-    delete_account = DeleteUpdate.Field() #TODO: Change this to a special update.
+    delete_account = DeleteUpdate.Field()
     update_account = mutations.UpdateAccount.Field()
     send_secondary_email_activation = mutations.SendSecondaryEmailActivation.Field()
     verify_secondary_email = mutations.VerifySecondaryEmail.Field()
