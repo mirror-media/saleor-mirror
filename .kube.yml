@@ -21,8 +21,8 @@ metadata:
   name: {{.app}}
 spec:
   replicas: 1
-  selector: 
-    matchLabels: 
+  selector:
+    matchLabels:
       app: {{.app}}
   template:
     metadata:
@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - image: {{.image}}
-#         imagePullPolicy: IfNotPresent
+         imagePullPolicy: IfNotPresent
         name: {{.app}}
         ports:
         - containerPort: 3000
