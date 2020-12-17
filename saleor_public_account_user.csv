@@ -1,3 +1,0 @@
-id,password,last_login,is_superuser,private_metadata,metadata,email,first_name,last_name,is_staff,is_active,note,date_joined,avatar,jwt_token_key,default_billing_address_id,default_shipping_address_id
-2,"",,false,{},{},readr@mirrormedia.mg,S,Chen,false,true,"",2020-12-07 06:04:41.690484,"",8maoiUcBFlcC,,
-1,pbkdf2_sha256$216000$tYdPwxwwEgYR$+YsnysH0C8HEZ6ry34CwGaMhBGRDcge60DOdmvJB6qQ=,2020-12-07 06:04:05.371276,true,{},{},andyhuang@mirrormedia.mg,Andy,Huang,true,true,,2020-12-01 06:11:06.658469,"",S4Wthw5V2yBn,,

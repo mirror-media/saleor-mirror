@@ -36,3 +36,7 @@ dist/
 django-queries-results.html
 configs/*
 venv/
+db.sqlite3
+static/
+staticfiles/
+Admin_Theme/

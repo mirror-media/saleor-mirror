@@ -1,0 +1,201 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type ArchiveAccount {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+enum CustomUserGender {
+  A_1
+  A_2
+  A_0
+}
+
+scalar Date
+
+scalar DateTime
+
+type DeleteUpdate {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+scalar ExpectedErrorType
+
+scalar GenericScalar
+
+type Mutation {
+  profile: ProfileType
+  register(email: String!, username: String!, password1: String!, password2: String!): Register
+  verifyAccount(token: String!): VerifyAccount
+  resendActivationEmail(email: String!): ResendActivationEmail
+  sendPasswordResetEmail(email: String!): SendPasswordResetEmail
+  passwordReset(token: String!, newPassword1: String!, newPassword2: String!): PasswordReset
+  passwordSet(token: String!, newPassword1: String!, newPassword2: String!): PasswordSet
+  passwordChange(oldPassword: String!, newPassword1: String!, newPassword2: String!): PasswordChange
+  archiveAccount(password: String!): ArchiveAccount
+  deleteAccount(id: String!): DeleteUpdate
+  updateAccount(firstName: String, lastName: String): UpdateAccount
+  sendSecondaryEmailActivation(email: String!, password: String!): SendSecondaryEmailActivation
+  verifySecondaryEmail(token: String!): VerifySecondaryEmail
+  swapEmails(password: String!): SwapEmails
+  tokenAuth(password: String!, email: String, username: String): ObtainJSONWebToken
+  verifyToken(token: String!): VerifyToken
+  refreshToken(refreshToken: String!): RefreshToken
+  revokeToken(refreshToken: String!): RevokeToken
+}
+
+interface Node {
+  id: ID!
+}
+
+type ObtainJSONWebToken {
+  token: String
+  success: Boolean
+  errors: ExpectedErrorType
+  user: UserNode
+  unarchiving: Boolean
+  refreshToken: String
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type PasswordChange {
+  success: Boolean
+  errors: ExpectedErrorType
+  refreshToken: String
+  token: String
+}
+
+type PasswordReset {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type PasswordSet {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type ProfileType {
+  user: UserType!
+  bio: String!
+  phoneNumber: String!
+}
+
+type Query {
+  allProfile: [ProfileType]
+  me: UserNode
+  user(id: ID!): UserNode
+  users(before: String, after: String, first: Int, last: Int, email: String, username: String, username_Icontains: String, username_Istartswith: String, isActive: Boolean, status_Archived: Boolean, status_Verified: Boolean, status_SecondaryEmail: String): UserNodeConnection
+}
+
+type RefreshToken {
+  token: String
+  payload: GenericScalar
+  success: Boolean
+  errors: ExpectedErrorType
+  refreshToken: String
+}
+
+type Register {
+  success: Boolean
+  errors: ExpectedErrorType
+  refreshToken: String
+  token: String
+}
+
+type ResendActivationEmail {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type RevokeToken {
+  revoked: Int
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type SendPasswordResetEmail {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type SendSecondaryEmailActivation {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type SwapEmails {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type UpdateAccount {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type UserNode implements Node {
+  id: ID!
+  lastLogin: DateTime
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  isStaff: Boolean!
+  isActive: Boolean!
+  dateJoined: DateTime!
+  name: String
+  gender: CustomUserGender!
+  phone: String
+  birthday: Date!
+  address: String
+  profile: ProfileType
+  pk: Int
+  archived: Boolean
+  verified: Boolean
+  secondaryEmail: String
+}
+
+type UserNodeConnection {
+  pageInfo: PageInfo!
+  edges: [UserNodeEdge]!
+}
+
+type UserNodeEdge {
+  node: UserNode
+  cursor: String!
+}
+
+type UserType {
+  id: ID!
+  lastLogin: DateTime
+  username: String!
+  email: String!
+  dateJoined: DateTime!
+}
+
+type VerifyAccount {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type VerifySecondaryEmail {
+  success: Boolean
+  errors: ExpectedErrorType
+}
+
+type VerifyToken {
+  payload: GenericScalar
+  success: Boolean
+  errors: ExpectedErrorType
+}

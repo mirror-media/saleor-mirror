@@ -1,45 +1,47 @@
-from django.conf import settings
-from django.conf.urls import include, url
-from django.conf.urls.static import static
-from django.contrib.staticfiles.views import serve
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib import admin
+from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import path, include
+# from graphene_django.views import GraphQLView # GraphiOL
+# from apps.graphql.view import GraphQLView # GraphQL Playground
+from apps.common.views import HomeView, SignUpView, DashboardView, ProfileUpdateView, ProfileView
 
-from .data_feeds.urls import urlpatterns as feed_urls
-from .graphql.api import schema
-from .graphql.views import GraphQLView
-from .plugins.views import handle_plugin_webhook
-from .product.views import digital_product
+from django.contrib.auth import views as auth_views
+from django.views.decorators.csrf import csrf_exempt
+from saleor.schema import schema
+from django.contrib.auth.decorators import login_required
+
+from saleor.settings import PLAYGROUND_ENABLED
+
+if PLAYGROUND_ENABLED:
+    from apps.graphql.view import GraphQLView # GraphQL Playground
+else:
+    from graphene_django.views import GraphQLView  # GraphiOL
 
 urlpatterns = [
-    url(r"^graphql/", csrf_exempt(GraphQLView.as_view(schema=schema)), name="api"),
-    url(r"^feeds/", include((feed_urls, "data_feeds"), namespace="data_feeds")),
-    url(
-        r"^digital-download/(?P<token>[0-9A-Za-z_\-]+)/$",
-        digital_product,
-        name="digital-product",
-    ),
-    url(
-        r"plugins/(?P<plugin_id>[.0-9A-Za-z_\-]+)/",
-        handle_plugin_webhook,
-        name="plugins",
-    ),
+    path('admin/', admin.site.urls),
+    
+    # path('', HomeView.as_view(), name='home'),
+    # path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    #
+    # path('profile-update/', ProfileUpdateView.as_view(), name='profile-update'),
+    # path('profile/', ProfileView.as_view(), name='profile'),
+
+    # Authentication 
+    # path('register/', SignUpView.as_view(), name="register"),
+
+    path("graphql/", csrf_exempt(GraphQLView.as_view(schema=schema))) if PLAYGROUND_ENABLED else path("graphql/", csrf_exempt(GraphQLView.as_view(schema=schema, graphiql=True))),
+
+    # path('login/', auth_views.LoginView.as_view(
+    #     template_name='common/login.html'
+    #     ),
+    #     name='login'
+    # ),
+
 ]
 
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 if settings.DEBUG:
-    import warnings
-    from .core import views
-
-    try:
-        import debug_toolbar
-    except ImportError:
-        warnings.warn(
-            "The debug toolbar was not installed. Ignore the error. \
-            settings.py should already have warned the user about it."
-        )
-    else:
-        urlpatterns += [url(r"^__debug__/", include(debug_toolbar.urls))]
-
-    urlpatterns += static("/media/", document_root=settings.MEDIA_ROOT) + [
-        url(r"^static/(?P<path>.*)$", serve),
-        url(r"^", views.home, name="home"),
-    ]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
