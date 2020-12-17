@@ -16,7 +16,7 @@
 !.pylintrc
 !.testcafe
 !.travis*
-!.tx
+!.txㄎ
 *.css
 *.log
 *.pot
