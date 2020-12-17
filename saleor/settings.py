@@ -32,9 +32,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = _SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['104.155.209.114']
 _DEFAULT_CLIENT_HOSTS = "localhost,127.0.0.1"
 ALLOWED_CLIENT_HOSTS = os.environ.get("ALLOWED_CLIENT_HOSTS")
 if not ALLOWED_CLIENT_HOSTS:
@@ -145,7 +145,7 @@ GRAPHENE = {
     ],
 }
 
-ALLOWED_GRAPHQL_ORIGINS = ''
+ALLOWED_GRAPHQL_ORIGINS = '104.155.209.114'
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
