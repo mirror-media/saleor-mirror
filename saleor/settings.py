@@ -5,7 +5,8 @@ from pytimeparse import parse
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
-from configs.configs import DB_DEV, _SECRET_KEY
+from configs.configs import DB_DEV, _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
+    DB_PORT
 
 
 def get_list(text):
@@ -119,12 +120,17 @@ AUTHENTICATION_BACKENDS = (
 WSGI_APPLICATION = 'saleor.wsgi.application'
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # },
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PWD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT
+    },
 
-    'default': dj_database_url.config(default=DB_DEV, conn_max_age=600)
+    # 'default': dj_database_url.config(default=DB_DEV, conn_max_age=600)
 }
 
 # ==============GQL=====================
