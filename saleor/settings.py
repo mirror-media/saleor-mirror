@@ -26,7 +26,7 @@ def get_bool_from_env(name, default_value):
 DEBUG = get_bool_from_env("DEBUG", True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = _SECRET_KEY
@@ -34,9 +34,10 @@ SECRET_KEY = _SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','104.155.209.114','35.201.139.78']
-_DEFAULT_CLIENT_HOSTS = "localhost,127.0.0.1,104.155.209.114,35.201.139.78"
+ALLOWED_HOSTS = ['127.0.0.1','104.155.209.114','35.201.139.78','localhost']
+_DEFAULT_CLIENT_HOSTS = ALLOWED_HOSTS
 # ALLOWED_CLIENT_HOSTS = os.environ.get("ALLOWED_CLIENT_HOSTS")
+
 ALLOWED_CLIENT_HOSTS = _DEFAULT_CLIENT_HOSTS
 if not ALLOWED_CLIENT_HOSTS:
     if DEBUG:
@@ -45,8 +46,6 @@ if not ALLOWED_CLIENT_HOSTS:
         raise ImproperlyConfigured(
             "ALLOWED_CLIENT_HOSTS environment variable must be set when DEBUG=False."
         )
-
-ALLOWED_CLIENT_HOSTS = get_list(ALLOWED_CLIENT_HOSTS)
 
 INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
 

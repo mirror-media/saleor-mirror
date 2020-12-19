@@ -16,8 +16,8 @@
 !.pylintrc
 !.testcafe
 !.travis*
-!.txㄎ
-*.css
+!.tx
+#*.css
 *.log
 *.pot
 *.pyc
@@ -38,5 +38,5 @@ configs/*
 venv/
 db.sqlite3
 
-staticfiles/
+#staticfiles/
 Admin_Theme/
