@@ -1,4 +1,5 @@
 import graphene
+from django.contrib.auth.decorators import login_required
 from graphene_django.types import DjangoObjectType
 from graphql_auth.bases import MutationMixin, DynamicArgsMixin
 from graphql_auth.mixins import DeleteAccountMixin, ArchiveOrDeleteMixin, RegisterMixin, \
@@ -9,14 +10,16 @@ from graphql_auth.utils import revoke_user_refresh_token, normalize_fields
 
 from .models import CustomUser
 from graphql_auth import mutations
+from saleor.core import BaseMutation, ModelMutation
+
 
 app_settings = GraphQLAuthSettings(None, DEFAULTS)
 
 
-class UserType(DjangoObjectType):
+class MemberType(DjangoObjectType):
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'last_login', 'date_joined')
+        fields = '__all__'
 
 
 class UserQueries(UserQuery, MeQuery, graphene.ObjectType):
@@ -43,32 +46,90 @@ class DeleteUpdate(MutationMixin, _DeleteUpdate, DynamicArgsMixin, graphene.Muta
 
 
 class Register(MutationMixin, DynamicArgsMixin, RegisterMixin, graphene.Mutation):
-
     __doc__ = RegisterMixin.__doc__
 
     _required_args = ['email']
     _args = ['firebase_id', 'nickname']
 
 
-class UpdateMember(
-    MutationMixin, DynamicArgsMixin, UpdateAccountMixin, graphene.Mutation
-):
-    __doc__ = UpdateAccountMixin.__doc__
+class CreateMember(graphene.Mutation):
+    class Arguments:
+        email = graphene.String(required=True)
+        nickname = graphene.String()
 
-    _required_args = ['firebase_id']
+    member = graphene.Field(MemberType)
+    success = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, root, info, email, **kwargs):
+        member = CustomUser(email=email)
+        if kwargs.get('nickname'):
+            nickname = kwargs.get('nickname')
+
+        success = True
+        member.save()
+
+        return CreateMember(member=member, success=True)
+
+
+class MemberInput(graphene.InputObjectType):
+    nickname = graphene.String()
+    name = graphene.String()
+    gender = graphene.Int()
+    phone = graphene.String()
+    birthday = graphene.Date()
+    address = graphene.String()
+    profile_image = graphene.String()
+
+
+class UpdateMember(graphene.Mutation):
+    class Arguments:
+        firebase_id = graphene.String(required=True)
+        nickname = graphene.String()
+        name = graphene.String()
+        gender = graphene.Int()
+        phone = graphene.String()
+        birthday = graphene.Date()
+        address = graphene.String()
+        profile_image = graphene.String()
+
+    class Meta:
+        exclude = ["password"]
+
+    member = graphene.Field(MemberType)
+    success = graphene.Boolean()
+
+    # @login_required
+    @staticmethod
+    def mutate(root, info, firebase_id, **kwargs):
+        success = False
+        member_instance = CustomUser.objects.get(firebase_id=firebase_id)
+
+        if member_instance:
+            print(member_instance)
+            success = True
+            for k, v in kwargs.items():
+                member_instance.k = v
+            member_instance.save()
+
+            return UpdateMember(member=member_instance, success=success)
+        else:
+            return UpdateMember(member=None, success=success)
 
 
 class UserMutations(graphene.ObjectType):
-    create_member = Register.Field()
+    member = graphene.Field(MemberType)
+
+    create_member = CreateMember.Field()
     update_member = UpdateMember.Field()
     delete_member = DeleteUpdate.Field()
     verify_member = mutations.VerifyAccount.Field()
 
-    resend_activation_email = mutations.ResendActivationEmail.Field()
-    send_password_reset_email = mutations.SendPasswordResetEmail.Field()
-    password_reset = mutations.PasswordReset.Field()
-    password_set = mutations.PasswordSet.Field()
-    password_change = mutations.PasswordChange.Field()
+    # resend_activation_email = mutations.ResendActivationEmail.Field()
+    # send_password_reset_email = mutations.SendPasswordResetEmail.Field()
+    # password_reset = mutations.PasswordReset.Field()
+    # password_set = mutations.PasswordSet.Field()
+    # password_change = mutations.PasswordChange.Field()
     archive_account = mutations.ArchiveAccount.Field()
     send_secondary_email_activation = mutations.SendSecondaryEmailActivation.Field()
     verify_secondary_email = mutations.VerifySecondaryEmail.Field()

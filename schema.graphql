@@ -8,6 +8,11 @@ type ArchiveAccount {
   errors: ExpectedErrorType
 }
 
+type CreateMember {
+  member: MemberType
+  success: Boolean
+}
+
 enum CustomUserGender {
   A_1
   A_2
@@ -27,10 +32,27 @@ scalar ExpectedErrorType
 
 scalar GenericScalar
 
+input MemberInput {
+  nickname: String
+  name: String
+  gender: Int
+  phone: String
+  birthday: Date
+  address: String
+  profileImage: String
+}
+
+type MemberType {
+  email: String!
+  firebaseId: String
+  nickname: String
+}
+
 type Mutation {
   profile: ProfileType
-  createMember(firebaseId: String, nickname: String, email: String!): Register
-  updateMember(firstName: String, lastName: String): UpdateAccount
+  member: MemberType
+  createMember(email: String!, nickname: String): CreateMember
+  updateMember(firebaseId: String!, input: MemberInput!): UpdateMember
   deleteMember(id: String!): DeleteUpdate
   verifyMember(token: String!): VerifyAccount
   resendActivationEmail(email: String!): ResendActivationEmail
@@ -86,7 +108,7 @@ type PasswordSet {
 }
 
 type ProfileType {
-  user: UserType!
+  user: MemberType!
   bio: String!
   phoneNumber: String!
 }
@@ -104,13 +126,6 @@ type RefreshToken {
   success: Boolean
   errors: ExpectedErrorType
   refreshToken: String
-}
-
-type Register {
-  success: Boolean
-  errors: ExpectedErrorType
-  refreshToken: String
-  token: String
 }
 
 type ResendActivationEmail {
@@ -139,9 +154,9 @@ type SwapEmails {
   errors: ExpectedErrorType
 }
 
-type UpdateAccount {
+type UpdateMember {
+  member: MemberType
   success: Boolean
-  errors: ExpectedErrorType
 }
 
 type UserNode implements Node {
@@ -154,11 +169,14 @@ type UserNode implements Node {
   isStaff: Boolean!
   isActive: Boolean!
   dateJoined: DateTime!
+  firebaseId: String
+  nickname: String
   name: String
   gender: CustomUserGender!
   phone: String
   birthday: Date!
   address: String
+  profileImage: String
   profile: ProfileType
   pk: Int
   archived: Boolean
@@ -174,14 +192,6 @@ type UserNodeConnection {
 type UserNodeEdge {
   node: UserNode
   cursor: String!
-}
-
-type UserType {
-  id: ID!
-  lastLogin: DateTime
-  username: String!
-  email: String!
-  dateJoined: DateTime!
 }
 
 type VerifyAccount {

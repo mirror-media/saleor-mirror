@@ -172,6 +172,17 @@ GRAPHQL_JWT = {
 
 PLAYGROUND_ENABLED = True
 
+GRAPHQL_AUTH = {
+    'LOGIN_ALLOWED_FIELDS': ['email', 'username'],
+    'ALLOW_PASSWORDLESS_REGISTRATION': True,
+    'REGISTER_MUTATION_FIELDS': ['email'],
+
+    'UPDATE_MUTATION_FIELDS': {'firebase_id':"String"},
+
+}
+
+
+
 JWT_EXPIRE = get_bool_from_env("JWT_EXPIRE", False)
 JWT_TTL_ACCESS = timedelta(seconds=parse(os.environ.get("JWT_TTL_ACCESS", "5 minutes")))
 JWT_TTL_APP_ACCESS = timedelta(

@@ -3,6 +3,8 @@ from datetime import datetime
 from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User, PermissionsMixin
+from graphene_django import DjangoObjectType
+
 
 Gender = ((1,'male'), (2,'female'), (0,'Not provided'))
 
@@ -10,6 +12,7 @@ Gender = ((1,'male'), (2,'female'), (0,'Not provided'))
 class CustomUser(AbstractUser):
     # email = models.EmailField()
     firebase_id = models.CharField(max_length=50, null=True)
+    nickname = models.CharField(max_length=50, null=True)
     name = models.CharField(max_length=20, null=True)
     gender = models.IntegerField(choices=Gender, default=3)
     phone = models.CharField(max_length=20, null=True)
@@ -17,6 +20,9 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=200, null=True)
     profile_image = models.ImageField(default='default-avatar.png', upload_to='users/',
                                       null=True, blank=True)
+
+    def __str__(self):
+        return f"FirebaseID: {self.firebase_id} , name: {self.name}"
 
     def anonymize(self):
         self.email = None
