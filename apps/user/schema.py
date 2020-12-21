@@ -10,7 +10,6 @@ from graphql_auth.utils import revoke_user_refresh_token, normalize_fields
 
 from .models import CustomUser
 from graphql_auth import mutations
-from saleor.core import BaseMutation, ModelMutation
 
 
 app_settings = GraphQLAuthSettings(None, DEFAULTS)
