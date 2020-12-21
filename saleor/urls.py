@@ -19,14 +19,14 @@ else:
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
     # path('', HomeView.as_view(), name='home'),
     # path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #
     # path('profile-update/', ProfileUpdateView.as_view(), name='profile-update'),
     # path('profile/', ProfileView.as_view(), name='profile'),
 
-    # Authentication 
+    # Authentication
     # path('register/', SignUpView.as_view(), name="register"),
 
     path("graphql/", csrf_exempt(GraphQLView.as_view(schema=schema))) if PLAYGROUND_ENABLED else path("graphql/", csrf_exempt(GraphQLView.as_view(schema=schema, graphiql=True))),

@@ -9,11 +9,14 @@ Gender = ((1,'male'), (2,'female'), (0,'Not provided'))
 
 class CustomUser(AbstractUser):
     # email = models.EmailField()
+    firebase_id = models.CharField(max_length=50, null=True)
     name = models.CharField(max_length=20, null=True)
     gender = models.IntegerField(choices=Gender, default=3)
     phone = models.CharField(max_length=20, null=True)
     birthday = models.DateField(default=datetime(2020,1,1))
     address = models.CharField(max_length=200, null=True)
+    profile_image = models.ImageField(default='default-avatar.png', upload_to='users/',
+                                      null=True, blank=True)
 
     def anonymize(self):
         self.email = None

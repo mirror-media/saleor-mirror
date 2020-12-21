@@ -11,4 +11,4 @@ class Mutation(UserMutations, UserProfileMutations):
     pass
 
 
-schema = graphene.Schema(mutation=Mutation, query=Query)
+schema = graphene.Schema(mutation=Mutation, query=Query, auto_camelcase=True)

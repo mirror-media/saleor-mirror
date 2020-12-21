@@ -18,6 +18,8 @@ class UserProfileQuery(graphene.ObjectType):
 
 class UserProfileMutations(graphene.Mutation):
     class Arguments:
+        birthday = graphene.Date()
+
         bio = graphene.String(required=True)
         id = graphene.ID()
 

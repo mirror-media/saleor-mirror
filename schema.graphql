@@ -29,16 +29,16 @@ scalar GenericScalar
 
 type Mutation {
   profile: ProfileType
-  register(email: String!, username: String!, password1: String!, password2: String!): Register
-  verifyAccount(token: String!): VerifyAccount
+  createMember(firebaseId: String, nickname: String, email: String!): Register
+  updateMember(firstName: String, lastName: String): UpdateAccount
+  deleteMember(id: String!): DeleteUpdate
+  verifyMember(token: String!): VerifyAccount
   resendActivationEmail(email: String!): ResendActivationEmail
   sendPasswordResetEmail(email: String!): SendPasswordResetEmail
   passwordReset(token: String!, newPassword1: String!, newPassword2: String!): PasswordReset
   passwordSet(token: String!, newPassword1: String!, newPassword2: String!): PasswordSet
   passwordChange(oldPassword: String!, newPassword1: String!, newPassword2: String!): PasswordChange
   archiveAccount(password: String!): ArchiveAccount
-  deleteAccount(id: String!): DeleteUpdate
-  updateAccount(firstName: String, lastName: String): UpdateAccount
   sendSecondaryEmailActivation(email: String!, password: String!): SendSecondaryEmailActivation
   verifySecondaryEmail(token: String!): VerifySecondaryEmail
   swapEmails(password: String!): SwapEmails

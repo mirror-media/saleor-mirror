@@ -36,6 +36,7 @@ dist/
 django-queries-results.html
 configs/*
 venv/
+venv-saleor/
 db.sqlite3
 
 #staticfiles/
