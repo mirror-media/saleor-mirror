@@ -23,43 +23,44 @@ scalar Date
 
 scalar DateTime
 
-type DeleteUpdate {
+type DeleteMember {
   success: Boolean
-  errors: ExpectedErrorType
 }
 
 scalar ExpectedErrorType
 
 scalar GenericScalar
 
-input MemberInput {
-  nickname: String
-  name: String
-  gender: Int
-  phone: String
-  birthday: Date
-  address: String
-  profileImage: String
-}
-
 type MemberType {
+  id: ID!
+  lastLogin: DateTime
+  username: String!
+  firstName: String!
+  lastName: String!
+  isStaff: Boolean!
+  isActive: Boolean!
+  dateJoined: DateTime!
   email: String!
   firebaseId: String
   nickname: String
+  name: String
+  gender: CustomUserGender!
+  phone: String
+  birthday: Date!
+  address: String
+  profileImage: String
+  profile: ProfileType
+  password: String!
+  isSuperuser: Boolean!
 }
 
 type Mutation {
   profile: ProfileType
   member: MemberType
-  createMember(email: String!, nickname: String): CreateMember
-  updateMember(firebaseId: String!, input: MemberInput!): UpdateMember
-  deleteMember(id: String!): DeleteUpdate
+  createMember(email: String!, firebaseId: String!, nickname: String): CreateMember
+  updateMember(address: String, birthday: Date, firebaseId: String!, gender: Int, name: String, nickname: String, phone: String, profileImage: String): UpdateMember
+  deleteMember(firebaseId: String): DeleteMember
   verifyMember(token: String!): VerifyAccount
-  resendActivationEmail(email: String!): ResendActivationEmail
-  sendPasswordResetEmail(email: String!): SendPasswordResetEmail
-  passwordReset(token: String!, newPassword1: String!, newPassword2: String!): PasswordReset
-  passwordSet(token: String!, newPassword1: String!, newPassword2: String!): PasswordSet
-  passwordChange(oldPassword: String!, newPassword1: String!, newPassword2: String!): PasswordChange
   archiveAccount(password: String!): ArchiveAccount
   sendSecondaryEmailActivation(email: String!, password: String!): SendSecondaryEmailActivation
   verifySecondaryEmail(token: String!): VerifySecondaryEmail
@@ -90,23 +91,6 @@ type PageInfo {
   endCursor: String
 }
 
-type PasswordChange {
-  success: Boolean
-  errors: ExpectedErrorType
-  refreshToken: String
-  token: String
-}
-
-type PasswordReset {
-  success: Boolean
-  errors: ExpectedErrorType
-}
-
-type PasswordSet {
-  success: Boolean
-  errors: ExpectedErrorType
-}
-
 type ProfileType {
   user: MemberType!
   bio: String!
@@ -128,18 +112,8 @@ type RefreshToken {
   refreshToken: String
 }
 
-type ResendActivationEmail {
-  success: Boolean
-  errors: ExpectedErrorType
-}
-
 type RevokeToken {
   revoked: Int
-  success: Boolean
-  errors: ExpectedErrorType
-}
-
-type SendPasswordResetEmail {
   success: Boolean
   errors: ExpectedErrorType
 }
@@ -165,10 +139,10 @@ type UserNode implements Node {
   username: String!
   firstName: String!
   lastName: String!
-  email: String!
   isStaff: Boolean!
   isActive: Boolean!
   dateJoined: DateTime!
+  email: String!
   firebaseId: String
   nickname: String
   name: String

@@ -1,5 +1,4 @@
 import graphene
-from django.contrib.auth.decorators import login_required
 from graphene_django.types import DjangoObjectType
 from graphql_auth.bases import MutationMixin, DynamicArgsMixin
 from graphql_auth.mixins import DeleteAccountMixin, ArchiveOrDeleteMixin, RegisterMixin, \
@@ -39,9 +38,15 @@ class _DeleteUpdate(ArchiveOrDeleteMixin):
             revoke_user_refresh_token(user=user)
 
 
-class DeleteUpdate(MutationMixin, _DeleteUpdate, DynamicArgsMixin, graphene.Mutation):
-    __doc__ = _DeleteUpdate.__doc__
-    _required_args = ["id"]
+# class DeleteUpdate(MutationMixin, _DeleteUpdate, DynamicArgsMixin, graphene.Mutation):
+#     __doc__ = _DeleteUpdate.__doc__
+#     _required_args = ["firebase_id"]
+
+# class DeleteUpdate(graphene.Mutation):
+#     class Arguments:
+#         firebase_id = graphene.String(required=True)
+#
+#     def mutate(self):
 
 
 class Register(MutationMixin, DynamicArgsMixin, RegisterMixin, graphene.Mutation):
@@ -54,14 +59,16 @@ class Register(MutationMixin, DynamicArgsMixin, RegisterMixin, graphene.Mutation
 class CreateMember(graphene.Mutation):
     class Arguments:
         email = graphene.String(required=True)
+        firebase_id = graphene.String(required=True)
         nickname = graphene.String()
 
     member = graphene.Field(MemberType)
     success = graphene.Boolean()
 
     @classmethod
-    def mutate(cls, root, info, email, **kwargs):
-        member = CustomUser(email=email)
+    def mutate(cls, root, info, email, firebase_id, **kwargs):
+        member = CustomUser(email=email, firebase_id=firebase_id)
+
         if kwargs.get('nickname'):
             nickname = kwargs.get('nickname')
 
@@ -85,22 +92,23 @@ class DeleteMember(graphene.Mutation):
     success = graphene.Boolean()
 
     class Arguments:
-        id = graphene.ID()
+        firebase_id = graphene.String()
 
     @classmethod
-    def mutate(cls, root, info, **kwargs):
-        obj = CustomUser.objects.get(pk=kwargs["id"])
-        if obj:
-            obj.firebase_id = None
-            obj.name = None
-            obj.phone = None
-            obj.address = None
-            obj.profile_image = None
-            obj.save()
+    def mutate(cls, root, info, firebase_id):
+        member_instance = CustomUser.objects.get(firebase_id=firebase_id)
+        if member_instance:
+            member_instance.firebase_id = None
+            member_instance.name = None
+            member_instance.phone = None
+            member_instance.address = None
+            member_instance.profile_image = None
+            member_instance.is_active = False
+            member_instance.nickname = None
+            member_instance.save()
 
             return cls(success=True)
         else:
-            print("RRR")
             return cls(success=False)
 
 
@@ -145,7 +153,7 @@ class UserMutations(graphene.ObjectType):
 
     create_member = CreateMember.Field()
     update_member = UpdateMember.Field()
-    delete_member = DeleteUpdate.Field()
+    delete_member = DeleteMember.Field()
     verify_member = mutations.VerifyAccount.Field()
 
     # resend_activation_email = mutations.ResendActivationEmail.Field()
