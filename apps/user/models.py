@@ -6,8 +6,6 @@ from django.contrib.auth.models import AbstractUser, User, PermissionsMixin
 from graphene_django import DjangoObjectType
 from django.utils.translation import ugettext_lazy as _
 
-from apps.user.managers import CustomUserManager
-
 Gender = ((1,'male'), (2,'female'), (0,'Not provided'))
 
 
@@ -25,7 +23,7 @@ class CustomUser(AbstractUser):
     profile_image = models.ImageField(default='default-avatar.png', upload_to='users/',
                                       null=True, blank=True)
 
-    objects = CustomUserManager()
+    # objects = CustomUserManager()
 
     def __str__(self):
         return f"FirebaseID: {self.firebase_id} , name: {self.name}"
