@@ -59,7 +59,7 @@ type Mutation {
   member: MemberType
   createMember(email: String!, firebaseId: String!, nickname: String): CreateMember
   updateMember(address: String, birthday: Date, firebaseId: String!, gender: Int, name: String, nickname: String, phone: String, profileImage: String): UpdateMember
-  deleteMember(firebaseId: String): DeleteMember
+  deleteMember(firebaseId: String!): DeleteMember
   verifyMember(token: String!): VerifyAccount
   archiveAccount(password: String!): ArchiveAccount
   sendSecondaryEmailActivation(email: String!, password: String!): SendSecondaryEmailActivation
