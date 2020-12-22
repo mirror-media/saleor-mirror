@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = _SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Register
 ALLOW_PASSWORDLESS_REGISTRATION = True
@@ -124,17 +124,17 @@ AUTHENTICATION_BACKENDS = (
 WSGI_APPLICATION = 'saleor.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PWD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT
-    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': DB_NAME,
+    #     'USER': DB_USER,
+    #     'PASSWORD': DB_PWD,
+    #     'HOST': DB_HOST,
+    #     'PORT': DB_PORT
+    # },
+    'default': {'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                'ENGINE': 'django.db.backends.sqlite3'},
 
-    # 'default': dj_database_url.config(default=DB_DEV, conn_max_age=600)
 }
 
 # ==============GQL=====================

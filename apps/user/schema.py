@@ -81,6 +81,29 @@ class MemberInput(graphene.InputObjectType):
     profile_image = graphene.String()
 
 
+class DeleteMember(graphene.Mutation):
+    success = graphene.Boolean()
+
+    class Arguments:
+        id = graphene.ID()
+
+    @classmethod
+    def mutate(cls, root, info, **kwargs):
+        obj = CustomUser.objects.get(pk=kwargs["id"])
+        if obj:
+            obj.firebase_id = None
+            obj.name = None
+            obj.phone = None
+            obj.address = None
+            obj.profile_image = None
+            obj.save()
+
+            return cls(success=True)
+        else:
+            print("RRR")
+            return cls(success=False)
+
+
 class UpdateMember(graphene.Mutation):
     class Arguments:
         firebase_id = graphene.String(required=True)
@@ -108,11 +131,12 @@ class UpdateMember(graphene.Mutation):
             print(member_instance)
             success = True
             for k, v in kwargs.items():
-                member_instance.k = v
+                setattr(member_instance, k, v)
             member_instance.save()
 
             return UpdateMember(member=member_instance, success=success)
         else:
+            print("SSSS")
             return UpdateMember(member=None, success=success)
 
 
