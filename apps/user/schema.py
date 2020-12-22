@@ -92,7 +92,7 @@ class DeleteMember(graphene.Mutation):
     success = graphene.Boolean()
 
     class Arguments:
-        firebase_id = graphene.String()
+        firebase_id = graphene.String(required=True)
 
     @classmethod
     def mutate(cls, root, info, firebase_id):
