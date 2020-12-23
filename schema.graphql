@@ -11,6 +11,7 @@ type ArchiveAccount {
 type CreateMember {
   member: MemberType
   success: Boolean
+  msg: String
 }
 
 enum CustomUserGender {
@@ -35,8 +36,6 @@ type MemberType {
   id: ID!
   lastLogin: DateTime
   username: String!
-  firstName: String!
-  lastName: String!
   isStaff: Boolean!
   isActive: Boolean!
   dateJoined: DateTime!
@@ -48,9 +47,6 @@ type MemberType {
   phone: String
   birthday: Date!
   address: String
-  profileImage: String
-  profile: ProfileType
-  password: String!
   isSuperuser: Boolean!
 }
 
@@ -92,7 +88,7 @@ type ProfileType {
 
 type Query {
   allProfile: [ProfileType]
-  member(firebaseId: String): MemberType
+  member(firebaseId: String!): MemberType
 }
 
 type RefreshToken {
