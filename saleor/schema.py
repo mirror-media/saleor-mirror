@@ -1,13 +1,12 @@
 import graphene
 from apps.user.schema import UserQueries, UserMutations
-from apps.userprofile.schema import UserProfileQuery, UserProfileMutations
 
 
-class Query(UserQueries, UserProfileQuery):
+class Query(UserQueries):
     pass
 
 
-class Mutation(UserMutations, UserProfileMutations):
+class Mutation(UserMutations):
     pass
 
 

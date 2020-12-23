@@ -1,12 +1,10 @@
 import graphene
 from django.db import IntegrityError
 from graphene_django.types import DjangoObjectType
-from graphql import GraphQLError
-from graphql_auth.bases import MutationMixin, DynamicArgsMixin
 from graphql_auth.mixins import ArchiveOrDeleteMixin, RegisterMixin, UpdateAccountMixin
 from graphql_auth.schema import UserQuery, MeQuery
 from graphql_auth.settings import GraphQLAuthSettings, DEFAULTS
-from graphql_auth.utils import revoke_user_refresh_token, normalize_fields
+from graphql_auth.utils import revoke_user_refresh_token
 
 from .models import CustomUser
 from graphql_auth import mutations
@@ -18,26 +16,17 @@ app_settings = GraphQLAuthSettings(None, DEFAULTS)
 class MemberType(DjangoObjectType):
     class Meta:
         model = CustomUser
-        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff', 'is_active', 'date_joined', 'name', 'gender','phone', 'birthday', 'address', 'firebase_id', 'nickname')
+        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff', 'is_active', 'date_joined', 'name', 'gender','phone', 'birthday', 'country', 'district', 'address', 'firebase_id', 'nickname')
 
 
 class UserQueries(graphene.ObjectType):
     class Arguments:
         firebase_id = graphene.String(required=True)
-        # email = graphene.String()
-    # members = graphene.List(MemberType)
-    member = graphene.Field(MemberType, firebase_id=graphene.String())
 
-    # def resolve_members(self, info, **kwargs):
-    #     return  CustomUser.objects.get()
+    member = graphene.Field(MemberType, firebase_id=graphene.String())
 
     def resolve_member(self, info, firebase_id):
         return CustomUser.objects.get(firebase_id=firebase_id)
-
-
-# class UserQueries(UserQuery, MeQuery, graphene.ObjectType):
-#     class Argument:
-#         firebase_id = graphene.String(required=True)
 
 
 class _DeleteUpdate(ArchiveOrDeleteMixin):
@@ -52,24 +41,6 @@ class _DeleteUpdate(ArchiveOrDeleteMixin):
             user.is_active = False
             user.save(update_fields=["is_active"])
             revoke_user_refresh_token(user=user)
-
-
-# class DeleteUpdate(MutationMixin, _DeleteUpdate, DynamicArgsMixin, graphene.Mutation):
-#     __doc__ = _DeleteUpdate.__doc__
-#     _required_args = ["firebase_id"]
-
-# class DeleteUpdate(graphene.Mutation):
-#     class Arguments:
-#         firebase_id = graphene.String(required=True)
-#
-#     def mutate(self):
-
-
-class Register(MutationMixin, DynamicArgsMixin, RegisterMixin, graphene.Mutation):
-    __doc__ = RegisterMixin.__doc__
-
-    _required_args = ['email']
-    _args = ['firebase_id', 'nickname']
 
 
 class CreateMember(graphene.Mutation):
@@ -107,6 +78,11 @@ class MemberInput(graphene.InputObjectType):
     gender = graphene.Int()
     phone = graphene.String()
     birthday = graphene.Date()
+
+    country = graphene.String()
+    city = graphene.String()
+    district = graphene.String()
+
     address = graphene.String()
     profile_image = graphene.String()
 
@@ -124,6 +100,9 @@ class DeleteMember(graphene.Mutation):
             member_instance.firebase_id = None
             member_instance.name = None
             member_instance.phone = None
+            member_instance.country = None
+            member_instance.city = None
+            member_instance.district = None
             member_instance.address = None
             member_instance.profile_image = None
             member_instance.is_active = False
@@ -143,6 +122,11 @@ class UpdateMember(graphene.Mutation):
         gender = graphene.Int()
         phone = graphene.String()
         birthday = graphene.Date()
+
+        country = graphene.String()
+        city = graphene.String()
+        district = graphene.String()
+
         address = graphene.String()
         profile_image = graphene.String()
 
@@ -152,7 +136,6 @@ class UpdateMember(graphene.Mutation):
     member = graphene.Field(MemberType)
     success = graphene.Boolean()
 
-    # @login_required
     @staticmethod
     def mutate(root, info, firebase_id, **kwargs):
         success = False
@@ -167,7 +150,6 @@ class UpdateMember(graphene.Mutation):
 
             return UpdateMember(member=member_instance, success=success)
         else:
-            print("SSSS")
             return UpdateMember(member=None, success=success)
 
 
