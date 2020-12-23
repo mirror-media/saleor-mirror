@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-    firebase_id = models.CharField(max_length=50, null=True)
+    firebase_id = models.CharField(max_length=50, null=True, unique=True)
     nickname = models.CharField(max_length=50, null=True)
     name = models.CharField(max_length=20, null=True)
     gender = models.IntegerField(choices=Gender, default=3)

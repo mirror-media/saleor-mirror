@@ -1,8 +1,9 @@
 import graphene
+from django.db import IntegrityError
 from graphene_django.types import DjangoObjectType
+from graphql import GraphQLError
 from graphql_auth.bases import MutationMixin, DynamicArgsMixin
-from graphql_auth.mixins import DeleteAccountMixin, ArchiveOrDeleteMixin, RegisterMixin, \
-    UpdateAccountMixin
+from graphql_auth.mixins import ArchiveOrDeleteMixin, RegisterMixin, UpdateAccountMixin
 from graphql_auth.schema import UserQuery, MeQuery
 from graphql_auth.settings import GraphQLAuthSettings, DEFAULTS
 from graphql_auth.utils import revoke_user_refresh_token, normalize_fields
@@ -17,11 +18,26 @@ app_settings = GraphQLAuthSettings(None, DEFAULTS)
 class MemberType(DjangoObjectType):
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff', 'is_active', 'date_joined', 'name', 'gender','phone', 'birthday', 'address', 'firebase_id', 'nickname')
 
 
-class UserQueries(UserQuery, MeQuery, graphene.ObjectType):
-    pass
+class UserQueries(graphene.ObjectType):
+    class Arguments:
+        firebase_id = graphene.String(required=True)
+        # email = graphene.String()
+    # members = graphene.List(MemberType)
+    member = graphene.Field(MemberType, firebase_id=graphene.String())
+
+    # def resolve_members(self, info, **kwargs):
+    #     return  CustomUser.objects.get()
+
+    def resolve_member(self, info, firebase_id):
+        return CustomUser.objects.get(firebase_id=firebase_id)
+
+
+# class UserQueries(UserQuery, MeQuery, graphene.ObjectType):
+#     class Argument:
+#         firebase_id = graphene.String(required=True)
 
 
 class _DeleteUpdate(ArchiveOrDeleteMixin):
@@ -64,6 +80,7 @@ class CreateMember(graphene.Mutation):
 
     member = graphene.Field(MemberType)
     success = graphene.Boolean()
+    msg = graphene.String()
 
     @classmethod
     def mutate(cls, root, info, email, firebase_id, **kwargs):
@@ -73,9 +90,15 @@ class CreateMember(graphene.Mutation):
             nickname = kwargs.get('nickname')
 
         success = True
-        member.save()
+        try:
+            member.save()
+            return CreateMember(member=member, success=success, msg="You have been registered.")
 
-        return CreateMember(member=member, success=True)
+        except IntegrityError as dberror:
+            if 'duplicate key value violates unique constraint' in dberror.args[0]:
+                return CreateMember(member=None, success=True, msg="This email or firebaseId has already exist.")
+            else:
+                raise dberror
 
 
 class MemberInput(graphene.InputObjectType):
