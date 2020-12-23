@@ -47,6 +47,7 @@ type MemberType {
   phone: String
   birthday: Date!
   country: String
+  city: String
   district: String
   address: String
   isSuperuser: Boolean!

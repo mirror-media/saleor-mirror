@@ -16,7 +16,7 @@ app_settings = GraphQLAuthSettings(None, DEFAULTS)
 class MemberType(DjangoObjectType):
     class Meta:
         model = CustomUser
-        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff', 'is_active', 'date_joined', 'name', 'gender','phone', 'birthday', 'country', 'district', 'address', 'firebase_id', 'nickname')
+        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff', 'is_active', 'date_joined', 'name', 'gender','phone', 'birthday', 'country', 'city', 'district', 'address', 'firebase_id', 'nickname')
 
 
 class UserQueries(graphene.ObjectType):
