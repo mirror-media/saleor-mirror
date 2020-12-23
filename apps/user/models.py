@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser, User, PermissionsMixin
 from graphene_django import DjangoObjectType
 from django.utils.translation import ugettext_lazy as _
 
-Gender = ((1,'male'), (2,'female'), (0,'Not provided'))
+Gender = ((1,'male'), (2,'female'), (0,'Null'), (3, 'Not provided'))
 
 
 class CustomUser(AbstractUser):
@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
     firebase_id = models.CharField(max_length=50, null=True, unique=True)
     nickname = models.CharField(max_length=50, null=True)
     name = models.CharField(max_length=20, null=True)
-    gender = models.IntegerField(choices=Gender, default=3)
+    gender = models.IntegerField(choices=Gender, default=0)
     phone = models.CharField(max_length=20, null=True)
     birthday = models.DateField(default=datetime(2020,1,1))
 

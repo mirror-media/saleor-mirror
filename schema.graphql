@@ -18,6 +18,7 @@ enum CustomUserGender {
   A_1
   A_2
   A_0
+  A_3
 }
 
 scalar Date
