@@ -84,7 +84,7 @@ type ObtainJSONWebToken {
 }
 
 type Query {
-  member(firebaseId: String): MemberType
+  member(firebaseId: String!): MemberType
 }
 
 type RefreshToken {

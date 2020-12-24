@@ -26,7 +26,7 @@ class UserQueries(graphene.ObjectType):
     class Arguments:
         firebase_id = graphene.String(required=True)
 
-    member = graphene.Field(MemberType, firebase_id=graphene.String())
+    member = graphene.Field(MemberType, firebase_id=graphene.String(required=True))
 
     def resolve_member(self, info, firebase_id):
         return CustomUser.objects.get(firebase_id=firebase_id)
