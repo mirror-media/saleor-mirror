@@ -1,5 +1,8 @@
+import hashlib
+
 import graphene
 from django.db import IntegrityError
+from django.db.models.functions import datetime
 from graphene_django.types import DjangoObjectType
 from graphql_auth.mixins import ArchiveOrDeleteMixin, RegisterMixin, UpdateAccountMixin
 from graphql_auth.schema import UserQuery, MeQuery
@@ -87,6 +90,14 @@ class MemberInput(graphene.InputObjectType):
     profile_image = graphene.String()
 
 
+def md5(email):
+
+    m = hashlib.md5()
+    m.update(email + str(datetime.datetime.now().timestamp()) )
+    hashed_email = m.hexdigest()
+    return hashed_email
+
+
 class DeleteMember(graphene.Mutation):
     success = graphene.Boolean()
 
@@ -97,6 +108,7 @@ class DeleteMember(graphene.Mutation):
     def mutate(cls, root, info, firebase_id):
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
         if member_instance:
+            member_instance.email = md5(member_instance.email)
             member_instance.firebase_id = None
             member_instance.name = None
             member_instance.phone = None
