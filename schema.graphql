@@ -40,13 +40,13 @@ type MemberType {
   isStaff: Boolean!
   isActive: Boolean!
   dateJoined: DateTime!
-  email: String!
+  email: String
   firebaseId: String
   nickname: String
   name: String
   gender: CustomUserGender!
   phone: String
-  birthday: Date!
+  birthday: Date
   country: String
   city: String
   district: String
@@ -125,13 +125,13 @@ type UserNode implements Node {
   isStaff: Boolean!
   isActive: Boolean!
   dateJoined: DateTime!
-  email: String!
+  email: String
   firebaseId: String
   nickname: String
   name: String
   gender: CustomUserGender!
   phone: String
-  birthday: Date!
+  birthday: Date
   country: String
   city: String
   district: String
