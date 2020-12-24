@@ -6,7 +6,7 @@ import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 from configs.configs import DB_DEV, _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
-    DB_PORT
+    DB_PORT, _DEBUG
 
 
 def get_list(text):
@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = _SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = _DEBUG
 
 # Register
 ALLOW_PASSWORDLESS_REGISTRATION = True
@@ -124,16 +124,16 @@ AUTHENTICATION_BACKENDS = (
 WSGI_APPLICATION = 'saleor.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PWD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT
-    },
-    # 'default': {'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #             'ENGINE': 'django.db.backends.sqlite3'},
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': DB_NAME,
+    #     'USER': DB_USER,
+    #     'PASSWORD': DB_PWD,
+    #     'HOST': DB_HOST,
+    #     'PORT': DB_PORT
+    # },
+    'default': {'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                'ENGINE': 'django.db.backends.sqlite3'},
 
 }
 
