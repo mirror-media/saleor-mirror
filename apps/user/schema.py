@@ -93,7 +93,8 @@ class MemberInput(graphene.InputObjectType):
 def md5(email):
 
     m = hashlib.md5()
-    m.update(email + str(datetime.datetime.now().timestamp()) )
+    encoding = (email + str(datetime.datetime.now().timestamp())).encode('utf-8')
+    m.update(encoding)
     hashed_email = m.hexdigest()
     return hashed_email
 
