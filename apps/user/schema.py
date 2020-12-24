@@ -110,7 +110,6 @@ class DeleteMember(graphene.Mutation):
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
         if member_instance:
             member_instance.email = md5(member_instance.email)
-            member_instance.firebase_id = None
             member_instance.name = None
             member_instance.phone = None
             member_instance.country = None
