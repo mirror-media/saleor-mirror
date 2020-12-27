@@ -39,6 +39,8 @@ ALLOW_PASSWORDLESS_REGISTRATION = True
 REGISTER_MUTATION_FIELDS = 'email'
 
 ALLOWED_HOSTS = ['127.0.0.1','104.155.209.114','35.201.139.78','localhost']
+ALLOWED_CIDR_NETS = ['10.0.0.0/8']
+
 _DEFAULT_CLIENT_HOSTS = ALLOWED_HOSTS
 # ALLOWED_CLIENT_HOSTS = os.environ.get("ALLOWED_CLIENT_HOSTS")
 
@@ -86,6 +88,7 @@ AUTH_USER_MODEL = 'user.CustomUser'
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
+    'allow_cidr.middleware.AllowCIDRMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -152,7 +155,7 @@ GRAPHENE = {
 ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', '35.201.139.78']
 
 GRAPHQL_JWT = {
-    "JWT_ALGORITHM": "ES512",
+    "JWT_ALGORITHM": "ES384",
     "JWT_VERIFY_EXPIRATION": True,
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
