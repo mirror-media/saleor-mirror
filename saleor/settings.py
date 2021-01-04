@@ -159,6 +159,8 @@ GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_ENCODE_HANDLER": 'saleor.es384.encode_ES384',
+    "JWT_DECODE_HANDLER": 'saleor.es384.decode_ES384',
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.VerifyAccount",
