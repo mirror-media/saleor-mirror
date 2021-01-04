@@ -5,7 +5,7 @@ from pytimeparse import parse
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
-from configs.configs import DB_DEV, _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
+from configs.configs import _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
     DB_PORT, _DEBUG
 
 
