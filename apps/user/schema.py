@@ -1,25 +1,36 @@
-import hashlib
-
 import graphene
 from django.db import IntegrityError
-from django.db.models.functions import datetime
+from django.utils import timezone
 from graphene_django.types import DjangoObjectType
-from graphql_auth.mixins import ArchiveOrDeleteMixin, RegisterMixin, UpdateAccountMixin
-from graphql_auth.schema import UserQuery, MeQuery
 from graphql_auth.settings import GraphQLAuthSettings, DEFAULTS
-from graphql_auth.utils import revoke_user_refresh_token
+from graphql_jwt import ObtainJSONWebToken, Verify
+from graphql_jwt.exceptions import JSONWebTokenError
+from django.contrib.auth import get_user_model
 
 from .models import CustomUser
 from graphql_auth import mutations
 
+# from .utils import md5
+import hashlib
+from django.db.models.functions import datetime
 
 app_settings = GraphQLAuthSettings(None, DEFAULTS)
+
+def md5(email):
+    m = hashlib.md5()
+    encoding = (email + str(datetime.datetime.now().timestamp())).encode('utf-8')
+    m.update(encoding)
+    hashed_email = m.hexdigest()
+    return hashed_email
 
 
 class MemberType(DjangoObjectType):
     class Meta:
         model = CustomUser
-        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff', 'is_active', 'date_joined', 'name', 'gender','phone', 'birthday', 'country', 'city', 'district', 'address', 'firebase_id', 'nickname')
+        name = 'member'
+        fields = ('id', 'last_login', 'is_superuser', 'username', 'email', 'is_staff',
+                  'is_active', 'date_joined', 'name', 'gender', 'phone', 'birthday',
+                  'country', 'city', 'district', 'address', 'firebase_id', 'nickname')
 
 
 class UserQueries(graphene.ObjectType):
@@ -30,20 +41,6 @@ class UserQueries(graphene.ObjectType):
 
     def resolve_member(self, info, firebase_id):
         return CustomUser.objects.get(firebase_id=firebase_id)
-
-
-class _DeleteUpdate(ArchiveOrDeleteMixin):
-
-    @classmethod
-    def resolve_action(cls, user, *args, **kwargs):
-        if app_settings.ALLOW_DELETE_ACCOUNT:
-            revoke_user_refresh_token(user=user)
-            # user.delete()
-            user.anonymize()
-        else:
-            user.is_active = False
-            user.save(update_fields=["is_active"])
-            revoke_user_refresh_token(user=user)
 
 
 class CreateMember(graphene.Mutation):
@@ -66,37 +63,15 @@ class CreateMember(graphene.Mutation):
         success = True
         try:
             member.save()
-            return CreateMember(member=member, success=success, msg="You have been registered.")
+            return CreateMember(member=member, success=success,
+                                msg="You have been registered.")
 
         except IntegrityError as dberror:
             if 'duplicate key value violates unique constraint' in dberror.args[0]:
-                return CreateMember(member=None, success=True, msg="This email or firebaseId has already exist.")
+                return CreateMember(member=None, success=True,
+                                    msg="This email or firebaseId has already exist.")
             else:
                 raise dberror
-
-
-class MemberInput(graphene.InputObjectType):
-    nickname = graphene.String()
-    name = graphene.String()
-    gender = graphene.Int()
-    phone = graphene.String()
-    birthday = graphene.Date()
-
-    country = graphene.String()
-    city = graphene.String()
-    district = graphene.String()
-
-    address = graphene.String()
-    profile_image = graphene.String()
-
-
-def md5(email):
-
-    m = hashlib.md5()
-    encoding = (email + str(datetime.datetime.now().timestamp())).encode('utf-8')
-    m.update(encoding)
-    hashed_email = m.hexdigest()
-    return hashed_email
 
 
 class DeleteMember(graphene.Mutation):
@@ -189,3 +164,50 @@ class UserMutations(graphene.ObjectType):
     verify_token = mutations.VerifyToken.Field()
     refresh_token = mutations.RefreshToken.Field()
     revoke_token = mutations.RevokeToken.Field()
+
+
+class Error(graphene.ObjectType):
+    field = graphene.String(
+        description=(
+            "Name of a field that caused the error. A value of `null` indicates that "
+            "the error isn't associated with a particular field."
+        ),
+        required=False,
+    )
+    message = graphene.String(description="The error message.")
+
+    class Meta:
+        description = "Represents an error in the input of a mutation."
+
+
+class CreateToken(ObtainJSONWebToken):
+    member = graphene.Field(MemberType, description="Member Instance")
+    errors = graphene.List(
+        graphene.NonNull(Error),
+        required=True)
+
+    @classmethod
+    def mutate(cls, root, info, **kwargs):
+        try:
+            result = super().mutate(root, info, **kwargs)
+        except JSONWebTokenError as e:
+            errors = [Error(message=str(e))]
+            # account_errors = []
+            return CreateToken(errors=errors)
+        # except ValidationError as e:
+        #     errors = validation_error_to_error_type(e)
+        #     return cls.handle_typed_errors(errors)
+        else:
+            member = result.member
+            member.last_login = timezone.now()
+            member.save(update_fields=["last_login"])
+            return result
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(user=info.context.user, errors=[], account_errors=[])
+
+class CoreMutations(graphene.ObjectType):
+    token_create = mutations.ObtainJSONWebToken.Field()
+    token_refresh = mutations.RefreshToken.Field()
+    token_verify = mutations.VerifyToken.Field()
