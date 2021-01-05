@@ -5,7 +5,7 @@ from pytimeparse import parse
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
-from configs.configs import DB_DEV, _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
+from configs.configs import _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
     DB_PORT, _DEBUG
 
 
@@ -159,6 +159,8 @@ GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_ENCODE_HANDLER": 'saleor.es384.encode_ES384',
+    "JWT_DECODE_HANDLER": 'saleor.es384.decode_ES384',
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.VerifyAccount",
