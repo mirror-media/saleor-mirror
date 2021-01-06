@@ -157,7 +157,7 @@ ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', '35.201.139.78']
 GRAPHQL_JWT = {
     "JWT_ALGORITHM": "ES384",
     "JWT_VERIFY_EXPIRATION": True,
-    # optional
+
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_ENCODE_HANDLER": 'saleor.es384.encode_ES384',
     "JWT_DECODE_HANDLER": 'saleor.es384.decode_ES384',
@@ -185,8 +185,6 @@ GRAPHQL_AUTH = {
     'UPDATE_MUTATION_FIELDS': {'firebase_id':"String"},
 
 }
-
-
 
 JWT_EXPIRE = get_bool_from_env("JWT_EXPIRE", False)
 JWT_TTL_ACCESS = timedelta(seconds=parse(os.environ.get("JWT_TTL_ACCESS", "5 minutes")))

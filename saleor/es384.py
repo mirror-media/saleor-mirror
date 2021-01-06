@@ -3,7 +3,13 @@ from configs.configs import PRIVATE_KEY, PUBLIC_KEY
 
 
 def encode_ES384(data, context=None):
-    return jwt.encode(data, key=PRIVATE_KEY, algorithm='ES384')
+    token = jwt.encode(data, key=PRIVATE_KEY, algorithm='ES384')
+    token = str(token)
+    if token.startswith("b'") and token.endswith("'"):
+        return token[2:-1]
+    else:
+        return token
+
 
 
 def decode_ES384(token, context=None):
