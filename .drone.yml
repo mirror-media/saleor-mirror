@@ -34,6 +34,7 @@ pipeline:
       - ls ../configs
       - mkdir configs
       - cp ../configs/mirror-media/saleor-mirror/prod/configs.py ./configs/configs.py
+      - cp ../configs/saleor_keyfile.json ./configs/saleor_keyfile.json
       - cp ../configs/gcskeyfile.json ./configs/gcskeyfile.json
       - rm -rf ../configs
     when:
@@ -44,18 +45,6 @@ pipeline:
     image: plugins/gcr
     repo: mirrormedia-1470651750304/${DRONE_REPO_NAME}
     tag: ${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER}_saleor-mirror
-    # command:
-      # - gcloud config set project mirrormedia-1470651750304
-#    environment:
-#      - DOCKER_LAUNCH_DEBUG=true
-#      - ALLOWED_HOSTS=localhost,127.0.0.1,35.185.133.209,104.155.209.114
-#      - DEFAULT_FROM_EMAIL=noreply@mirrormedia.mg
-#      - CELERY_BROKER_URL=redis://35.229.222.166:6379/
-#      - GOOGLE_CLOUD_PROJECT=mirrormedia-1470651750304
-#      - GS_PROJECT_ID=mirrormedia-1470651750304
-#      - GS_STORAGE_BUCKET_NAME=mirrormedia-files
-#      - REDIS_URL=redis://35.229.222.166:6379/
-#      - GOOGLE_APPLICATION_CREDENTIALS=./configs/gcskeyfile.json
     secrets: [google_credentials]
     when:
       event: [push]

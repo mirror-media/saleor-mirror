@@ -73,6 +73,7 @@ THIRD_PARTY_APPS = [
     'social_django',
     "graphene_django",
     'graphql_playground',
+    'background_task',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'graphql_auth',  # Django-GraphQL-Auth must be installed
 ]

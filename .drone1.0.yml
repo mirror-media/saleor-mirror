@@ -52,7 +52,8 @@ steps:
     commands:
       - gcloud source repos clone configs ../configs
       - cp ../configs/saleor-mirror/dev/readr/config.Saleor.js ./configs/config.js
-      - cp ../configs/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
+      - cp ../configs/saleor-mirror/dev/saleor_keyfile.json ./configs/saleor_keyfile.json
+      - cp ../configs/gcskeyfile.json ./configs/gcskeyfile.json
     environment:
       GOOGLE_CREDENTIALS:
         from_secret: google_credentials
@@ -107,7 +108,7 @@ steps:
     image: gcr.io/mirrormedia-1470651750304/drone-cloud-sdk:latest
     commands:
       - cp ../configs/saleor-mirror/ ./configs/config.js
-      - cp ../configs/saleor-mirror/dev/gcskeyfile.json ./configs/gcskeyfile.json
+      - cp ../configs/saleor-mirror/dev/saleor_keyfile.json ./configs/saleor_keyfile.json
     environment:
       GOOGLE_CREDENTIALS:
         from_secret: google_credentials
