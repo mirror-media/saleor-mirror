@@ -4,6 +4,7 @@ from django.utils import timezone
 from graphene_django.types import DjangoObjectType
 from graphql_auth.settings import GraphQLAuthSettings, DEFAULTS
 from graphql_jwt import ObtainJSONWebToken, Verify
+from graphql_jwt.decorators import superuser_required
 from graphql_jwt.exceptions import JSONWebTokenError
 from django.contrib.auth import get_user_model
 
@@ -54,6 +55,7 @@ class CreateMember(graphene.Mutation):
     msg = graphene.String()
 
     @classmethod
+    @superuser_required
     def mutate(cls, root, info, email, firebase_id, **kwargs):
         member = CustomUser(email=email, firebase_id=firebase_id)
 
@@ -81,6 +83,7 @@ class DeleteMember(graphene.Mutation):
         firebase_id = graphene.String(required=True)
 
     @classmethod
+    @superuser_required
     def mutate(cls, root, info, firebase_id):
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
         if member_instance:
@@ -124,6 +127,7 @@ class UpdateMember(graphene.Mutation):
     success = graphene.Boolean()
 
     @staticmethod
+    @superuser_required
     def mutate(root, info, firebase_id, **kwargs):
         success = False
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
