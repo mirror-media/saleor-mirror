@@ -1,4 +1,6 @@
 import json
+from typing import Dict
+
 from google.cloud import pubsub_v1, secretmanager
 from concurrent.futures import TimeoutError
 import os
@@ -13,42 +15,35 @@ os.environ[
 # '/Users/andy/mirror/saleor-mirror/configs/saleor_keyfile.json'
 
 PROJECT_ID = 'mirrormedia-1470651750304'
-TOPIC_NAME = 'gateway-saleor'
-SUB = 'renew_token'
 timeout = 60
-
-# Pub/Sub
-subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path(PROJECT_ID, SUB)
 
 # Secret
 secret_client = secretmanager.SecretManagerServiceClient()
 
 
-def read_secret(payload):
-    data = json.loads(payload)
+def read_secret(data: Dict) -> Dict:
+
     if data["type"] == 'request':
-        secret_name = data['secret_name']  # 'mm-gateway-token'
+        secret_name = data['secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
         version = data["version"]
         response = secret_client.access_secret_version(
             name=f"projects/983956931553/secrets/{secret_name}/versions/{version}")
+
+        # response.name = 'projects/983956931553/secrets/mm-gateway-token/versions/4'
         payload = response.payload.data.decode("UTF-8")
         secret = json.loads(payload)
         return secret
 
 
-def update_secret(payload):
-    if not isinstance(payload, dict):
-        data = json.loads(payload)
-    else:
-        data = payload
+def update_secret(data: Dict) -> Dict:
 
-    secret_name = data['secret_name']  # 'mm-gateway-token'
+    secret_name = data['secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
     version = data['version']
 
-    secret_client.disable_secret_version(name=f"{secret_name}/versions/{version}")
+    secret_client.disable_secret_version(
+        name=f"projects/983956931553/secrets/{secret_name}/versions/{version}")
 
-    old_secret = read_secret(payload)
+    old_secret = read_secret(data)
     refresh_token = get_refresh_token(old_secret['refresh_token'])
     new_secret = get_renew_token(refresh_token)
     refresh_token.revoke()
@@ -56,11 +51,12 @@ def update_secret(payload):
     response = secret_client.add_secret_version(
         parent=secret_name, payload={"data": json.dumps(new_secret).encode('utf-8')}
     )
-    return {"type": "complete", "secret_name": secret_name,
-            "version": response.name.split('/')[-1]}
+    complete_message = {"secret_name": secret_name,
+              "version": response.name.split('/')[-1]}
+    return complete_message
 
 
-def get_renew_token(refresh_token):
+def get_renew_token(refresh_token: str) -> Dict:
     gql = f"""
     mutation{{refreshToken(refreshToken:"{refresh_token}"){{
         token
@@ -81,15 +77,16 @@ def callback(message):
     print(f"Received {message}.", type(message))
     message.ack()
 
-    secret = read_secret(message.data.decode('utf-8'))
+    secret = read_secret(json.loads(message.data.decode('utf-8')))
     complete_message = update_secret(secret)
 
     publish_secret(complete_message)
 
 
 def publish_secret(complete_message):
+    publish_topic = 'update_token'
     publisher = pubsub_v1.PublisherClient()
-    topic_path = publisher.topic_path(PROJECT_ID, 'gateway-saleor')
+    topic_path = publisher.topic_path(PROJECT_ID, publish_topic)
 
     data = json.dumps(complete_message).encode('utf-8')
     future = publisher.publish(topic_path, data=data)
@@ -97,6 +94,10 @@ def publish_secret(complete_message):
 
 @background(schedule=timeout)
 def listening():
+    subscription_topic = 'renew_token'
+    subscriber = pubsub_v1.SubscriberClient()
+    subscription_path = subscriber.subscription_path(PROJECT_ID, subscription_topic)
+
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
     print(f"Listening for messages on {subscription_path}..\n")
     # Wrap subscriber in a 'with' block to automatically call close() when done.
