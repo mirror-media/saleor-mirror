@@ -23,16 +23,15 @@ secret_client = secretmanager.SecretManagerServiceClient()
 
 def read_secret(data: Dict) -> Dict:
 
-    if data["type"] == 'request':
-        secret_name = data['secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
-        version = data["version"]
-        response = secret_client.access_secret_version(
-            name=f"projects/983956931553/secrets/{secret_name}/versions/{version}")
+    secret_name = data['secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
+    version = data["version"]
+    response = secret_client.access_secret_version(
+        name=f"projects/983956931553/secrets/{secret_name}/versions/{version}")
 
-        # response.name = 'projects/983956931553/secrets/mm-gateway-token/versions/4'
-        payload = response.payload.data.decode("UTF-8")
-        secret = json.loads(payload)
-        return secret
+    # response.name = 'projects/983956931553/secrets/mm-gateway-token/versions/4'
+    payload = response.payload.data.decode("UTF-8")
+    secret = json.loads(payload)
+    return secret
 
 
 def update_secret(data: Dict) -> Dict:
