@@ -55,7 +55,7 @@ class CreateMember(graphene.Mutation):
     msg = graphene.String()
 
     @classmethod
-    @superuser_required
+    # @superuser_required
     def mutate(cls, root, info, email, firebase_id, **kwargs):
         member = CustomUser(email=email, firebase_id=firebase_id)
 
@@ -83,7 +83,7 @@ class DeleteMember(graphene.Mutation):
         firebase_id = graphene.String(required=True)
 
     @classmethod
-    @superuser_required
+    # @superuser_required
     def mutate(cls, root, info, firebase_id):
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
         if member_instance:
@@ -127,7 +127,7 @@ class UpdateMember(graphene.Mutation):
     success = graphene.Boolean()
 
     @staticmethod
-    @superuser_required
+    # @superuser_required
     def mutate(root, info, firebase_id, **kwargs):
         success = False
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
