@@ -211,6 +211,7 @@ class CreateToken(ObtainJSONWebToken):
     def resolve(cls, root, info, **kwargs):
         return cls(user=info.context.user, errors=[], account_errors=[])
 
+
 class CoreMutations(graphene.ObjectType):
     token_create = mutations.ObtainJSONWebToken.Field()
     token_refresh = mutations.RefreshToken.Field()

@@ -6,7 +6,7 @@ import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 from configs.configs import _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
-    DB_PORT, _DEBUG
+    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION
 
 
 def get_list(text):
@@ -158,7 +158,9 @@ ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', '35.201.139.78']
 GRAPHQL_JWT = {
     "JWT_ALGORITHM": "ES384",
     "JWT_VERIFY_EXPIRATION": True,
-
+    "JWT_EXPIRE": False,
+    "JWT_EXPIRATION_DELTA": JWT_EXPIRATION,
+    "JWT_REFRESH_EXPIRATION_DELTA": JWT_REFRESH_EXPIRATION,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
     "JWT_ENCODE_HANDLER": 'saleor.es384.encode_ES384',
     "JWT_DECODE_HANDLER": 'saleor.es384.decode_ES384',
@@ -187,16 +189,15 @@ GRAPHQL_AUTH = {
 
 }
 
-JWT_EXPIRE = get_bool_from_env("JWT_EXPIRE", False)
-JWT_TTL_ACCESS = timedelta(seconds=parse(os.environ.get("JWT_TTL_ACCESS", "5 minutes")))
-JWT_TTL_APP_ACCESS = timedelta(
-    seconds=parse(os.environ.get("JWT_TTL_APP_ACCESS", "5 minutes"))
-)
-JWT_TTL_REFRESH = timedelta(seconds=parse(os.environ.get("JWT_TTL_REFRESH", "30 days")))
-
-JWT_TTL_REQUEST_EMAIL_CHANGE = timedelta(
-    seconds=parse(os.environ.get("JWT_TTL_REQUEST_EMAIL_CHANGE", "1 hour")),
-)
+# JWT_TTL_ACCESS = timedelta(seconds=parse(os.environ.get("JWT_TTL_ACCESS", "3560 days")))
+# JWT_TTL_APP_ACCESS = timedelta(
+#     seconds=parse(os.environ.get("JWT_TTL_APP_ACCESS", "5 minutes"))
+# )
+# JWT_TTL_REFRESH = timedelta(seconds=parse(os.environ.get("JWT_TTL_REFRESH", "30 days")))
+#
+# JWT_TTL_REQUEST_EMAIL_CHANGE = timedelta(
+#     seconds=parse(os.environ.get("JWT_TTL_REQUEST_EMAIL_CHANGE", "1 hour")),
+# )
 
 LOGIN_URL = '/login/'
 
