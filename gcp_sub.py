@@ -1,5 +1,5 @@
 import json
-from typing import Dict
+from typing import Dict, Tuple
 
 from google.cloud import pubsub_v1, secretmanager
 from concurrent.futures import TimeoutError
@@ -22,21 +22,24 @@ secret_client = secretmanager.SecretManagerServiceClient()
 
 
 def read_secret(data: Dict) -> Dict:
-
-    secret_name = data['secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
+    """Read and decode secret from GCP secret"""
+    secret_name = data[
+        'secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
     version = data["version"]
     response = secret_client.access_secret_version(
         name=f"projects/983956931553/secrets/{secret_name}/versions/{version}")
 
-    # response.name = 'projects/983956931553/secrets/mm-gateway-token/versions/4'
     payload = response.payload.data.decode("UTF-8")
+
     secret = json.loads(payload)
     return secret
 
 
-def update_secret(data: Dict) -> Dict:
+def update_secret(data: Dict) -> Tuple:
+    """Update secret and return complete message"""
 
-    secret_name = data['secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
+    secret_name = data[
+        'secret_name']  # 'mm-gateway-token' "saleor-mirror-token-for-mm-apigateway-dev"
     version = data['version']
 
     secret_client.disable_secret_version(
@@ -50,12 +53,15 @@ def update_secret(data: Dict) -> Dict:
     response = secret_client.add_secret_version(
         parent=secret_name, payload={"data": json.dumps(new_secret).encode('utf-8')}
     )
-    complete_message = {"secret_name": secret_name,
-              "version": response.name.split('/')[-1]}
-    return complete_message
+    # complete_message = {"secret_name": secret_name,
+    #           "version": response.name.split('/')[-1]}
+    version = response.name.split('/')[-1]
+    return secret_name, version
 
 
 def get_renew_token(refresh_token: str) -> Dict:
+
+    # TODO:Try another better way to do this.
     gql = f"""
     mutation{{refreshToken(refreshToken:"{refresh_token}"){{
         token
@@ -77,18 +83,20 @@ def callback(message):
     message.ack()
 
     secret = read_secret(json.loads(message.data.decode('utf-8')))
-    complete_message = update_secret(secret)
+    secret_name, version = update_secret(secret)
 
-    publish_secret(complete_message)
+    publish_complete_message(secret_name, version)
 
 
-def publish_secret(complete_message):
+def publish_complete_message(secret_name: str, version: str):
+    """Publish complete message to Pub/Sub"""
     publish_topic = 'update_token'
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(PROJECT_ID, publish_topic)
 
-    data = json.dumps(complete_message).encode('utf-8')
-    future = publisher.publish(topic_path, data=data)
+    # data = json.dumps(complete_message).encode('utf-8')
+    future = publisher.publish(topic_path, data=b'', secret_name=secret_name,
+                               version=version)
 
 
 @background(schedule=timeout)
