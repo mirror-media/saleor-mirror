@@ -11,7 +11,6 @@ from django.contrib.auth import get_user_model
 from .models import CustomUser
 from graphql_auth import mutations
 
-# from .utils import md5
 import hashlib
 from django.db.models.functions import datetime
 
@@ -128,15 +127,39 @@ class UpdateMember(graphene.Mutation):
 
     @staticmethod
     # @superuser_required
-    def mutate(root, info, firebase_id, **kwargs):
+    def mutate(root, info, firebase_id, 
+        nickname=None, 
+        name=None,
+        gender=None,
+        phone=None,
+        birthday=None,
+        country=None,
+        city=None,
+        district=None,
+        address=None,
+        profile_image=None
+        ):
         success = False
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
+        
 
         if member_instance:
             print(member_instance)
             success = True
-            for k, v in kwargs.items():
-                setattr(member_instance, k, v)
+            # iterate all kwargs
+            # for k, v in kwargs.items():
+            #     if v:
+            #         setattr(member_instance, k, v)
+            member_instance.nickname = nickname
+            member_instance.name = name
+            member_instance.gender = gender
+            member_instance.phone = phone
+            member_instance.birthday = birthday
+            member_instance.country = country
+            member_instance.city = city
+            member_instance.district = district
+            member_instance.address = address
+            member_instance.profile_image = profile_image
             member_instance.save()
 
             return UpdateMember(member=member_instance, success=success)

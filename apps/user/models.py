@@ -1,5 +1,5 @@
 from datetime import datetime
-
+# from graphene import Enum # This is for Graphql v3
 from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User, PermissionsMixin
@@ -7,6 +7,13 @@ from graphene_django import DjangoObjectType
 from django.utils.translation import ugettext_lazy as _
 
 Gender = ((1,'male'), (2,'female'), (0, None), (3, 'Not provided'))
+
+# class Gender(Enum):
+#     """Use this in GraphQL v3"""
+#     none = 0
+#     male = 1
+#     female = 2
+#     not_provided = 3
 
 
 class CustomUser(AbstractUser):
@@ -16,11 +23,12 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-    email = models.EmailField(_('email address'), null=True, unique=True)
+    email = models.EmailField(_('email address'), null=True)
     firebase_id = models.TextField(null=True)
 
     nickname = models.TextField(null=True)
     name = models.TextField(null=True)
+    # gender = Gender(required=True) # Use this in GraphQL v3
     gender = models.IntegerField(choices=Gender, default=0)
     phone = models.TextField(null=True)
     birthday = models.DateField(null=True)
