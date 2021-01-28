@@ -104,6 +104,10 @@ class DeleteMember(graphene.Mutation):
 
 
 class UpdateMember(graphene.Mutation):
+    """Update member informations from firebase_id.
+    If any argument is not supplied, is set to None or default value of database.
+    Saving a None value to database is to delete the previous information.
+    """
     class Arguments:
         firebase_id = graphene.String(required=True)
         nickname = graphene.String()
@@ -130,7 +134,7 @@ class UpdateMember(graphene.Mutation):
     def mutate(root, info, firebase_id, 
         nickname=None, 
         name=None,
-        gender=None,
+        gender=3,
         phone=None,
         birthday=None,
         country=None,
