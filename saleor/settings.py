@@ -2,7 +2,6 @@ import ast
 import os
 from datetime import timedelta
 from pytimeparse import parse
-import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 from configs.configs import _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
@@ -55,7 +54,7 @@ if not ALLOWED_CLIENT_HOSTS:
 
 INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Application definition
 DEFAULT_APPS = [
@@ -68,7 +67,7 @@ DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'crispy_forms',
+    # 'crispy_forms',
     'django_cleanup',
     'social_django',
     "graphene_django",
