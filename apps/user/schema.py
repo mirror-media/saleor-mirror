@@ -56,11 +56,11 @@ class CreateMember(graphene.Mutation):
 
     @classmethod
     # @superuser_required
-    def mutate(cls, root, info, email, firebase_id, **kwargs):
-        member = CustomUser(email=email, firebase_id=firebase_id)
+    def mutate(cls, root, info, firebase_id, **kwargs):
+        member = CustomUser(firebase_id=firebase_id)
 
-        if kwargs.get('nickname'):
-            nickname = kwargs.get('nickname')
+        for field, value in kwargs.items():
+            setattr(member, field, value)
 
         success = True
         try:
@@ -69,6 +69,7 @@ class CreateMember(graphene.Mutation):
                                 msg="You have been registered.")
 
         except IntegrityError as dberror:
+            # TODO: improve this
             if 'duplicate key value violates unique constraint' in dberror.args[0]:
                 return CreateMember(member=None, success=True,
                                     msg="This email or firebaseId has already exist.")
