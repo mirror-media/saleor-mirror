@@ -16,6 +16,7 @@ from django.db.models.functions import datetime
 
 app_settings = GraphQLAuthSettings(None, DEFAULTS)
 
+
 def md5(email):
     m = hashlib.md5()
     encoding = (email + str(datetime.datetime.now().timestamp())).encode('utf-8')
@@ -85,7 +86,7 @@ class DeleteMember(graphene.Mutation):
     # @superuser_required
     def mutate(cls, root, info, firebase_id):
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
-        if member_instance:
+        if member_instance and member_instance.is_active==True:
             member_instance.email = md5(member_instance.email)
             member_instance.name = None
             member_instance.phone = None
@@ -96,6 +97,7 @@ class DeleteMember(graphene.Mutation):
             member_instance.profile_image = None
             member_instance.is_active = False
             member_instance.nickname = None
+            member_instance.firebase_id = f"Deleted-{member_instance.firebase_id}"
             member_instance.save()
 
             return cls(success=True)
@@ -108,6 +110,7 @@ class UpdateMember(graphene.Mutation):
     If any argument is not supplied, is set to None or default value of database.
     Saving a None value to database is to delete the previous information.
     """
+
     class Arguments:
         firebase_id = graphene.String(required=True)
         nickname = graphene.String()
@@ -131,21 +134,20 @@ class UpdateMember(graphene.Mutation):
 
     @staticmethod
     # @superuser_required
-    def mutate(root, info, firebase_id, 
-        nickname=None, 
-        name=None,
-        gender=3,
-        phone=None,
-        birthday=None,
-        country=None,
-        city=None,
-        district=None,
-        address=None,
-        profile_image=None
-        ):
+    def mutate(root, info, firebase_id,
+               nickname=None,
+               name=None,
+               gender=3,
+               phone=None,
+               birthday=None,
+               country=None,
+               city=None,
+               district=None,
+               address=None,
+               profile_image=None
+               ):
         success = False
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
-        
 
         if member_instance:
             print(member_instance)
