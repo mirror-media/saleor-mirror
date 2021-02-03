@@ -7,6 +7,7 @@ from graphql_jwt import ObtainJSONWebToken, Verify
 from graphql_jwt.decorators import superuser_required
 from graphql_jwt.exceptions import JSONWebTokenError
 from django.contrib.auth import get_user_model
+from django.db.models.fields import NOT_PROVIDED
 
 from .models import CustomUser
 from graphql_auth import mutations
@@ -15,7 +16,7 @@ import hashlib
 from django.db.models.functions import datetime
 
 app_settings = GraphQLAuthSettings(None, DEFAULTS)
-delete_signal = 'null'
+delete_signal = ''
 
 def md5(email):
     m = hashlib.md5()
@@ -144,7 +145,10 @@ class UpdateMember(graphene.Mutation):
             for field, value in kwargs.items():
                 if value == delete_signal:
                     default_value = CustomUser._meta.get_field(field).default
-                    setattr(member_instance, field, default_value)
+                    if default_value is NOT_PROVIDED:
+                        setattr(member_instance, field, None)
+                    else:
+                        setattr(member_instance, field, default_value)
                 else:
                     setattr(member_instance, field, value)
 
