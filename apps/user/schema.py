@@ -152,6 +152,8 @@ class UpdateMember(graphene.Mutation):
                 else:
                     setattr(member_instance, field, value)
 
+                member_instance.save()
+
             return UpdateMember(member=member_instance, success=success)
         else:
             return UpdateMember(member=None, success=success)
