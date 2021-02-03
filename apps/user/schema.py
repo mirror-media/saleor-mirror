@@ -7,6 +7,7 @@ from graphql_jwt import ObtainJSONWebToken, Verify
 from graphql_jwt.decorators import superuser_required
 from graphql_jwt.exceptions import JSONWebTokenError
 from django.contrib.auth import get_user_model
+from django.db.models.fields import NOT_PROVIDED
 
 from .models import CustomUser
 from graphql_auth import mutations
@@ -15,6 +16,7 @@ import hashlib
 from django.db.models.functions import datetime
 
 app_settings = GraphQLAuthSettings(None, DEFAULTS)
+delete_signal = ''
 
 def md5(email):
     m = hashlib.md5()
@@ -88,6 +90,7 @@ class DeleteMember(graphene.Mutation):
         if member_instance:
             member_instance.email = md5(member_instance.email)
             member_instance.name = None
+            member_instance.gender = 3
             member_instance.phone = None
             member_instance.country = None
             member_instance.city = None
@@ -104,7 +107,7 @@ class DeleteMember(graphene.Mutation):
 
 
 class UpdateMember(graphene.Mutation):
-    """Update member informations from firebase_id.
+    """Update member information from firebase_id.
     If any argument is not supplied, is set to None or default value of database.
     Saving a None value to database is to delete the previous information.
     """
@@ -131,40 +134,23 @@ class UpdateMember(graphene.Mutation):
 
     @staticmethod
     # @superuser_required
-    def mutate(root, info, firebase_id, 
-        nickname=None, 
-        name=None,
-        gender=3,
-        phone=None,
-        birthday=None,
-        country=None,
-        city=None,
-        district=None,
-        address=None,
-        profile_image=None
-        ):
+    def mutate(root, info, firebase_id, **kwargs):
         success = False
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
-        
 
         if member_instance:
             print(member_instance)
             success = True
             # iterate all kwargs
-            # for k, v in kwargs.items():
-            #     if v:
-            #         setattr(member_instance, k, v)
-            member_instance.nickname = nickname
-            member_instance.name = name
-            member_instance.gender = gender
-            member_instance.phone = phone
-            member_instance.birthday = birthday
-            member_instance.country = country
-            member_instance.city = city
-            member_instance.district = district
-            member_instance.address = address
-            member_instance.profile_image = profile_image
-            member_instance.save()
+            for field, value in kwargs.items():
+                if value == delete_signal:
+                    default_value = CustomUser._meta.get_field(field).default
+                    if default_value is NOT_PROVIDED:
+                        setattr(member_instance, field, None)
+                    else:
+                        setattr(member_instance, field, default_value)
+                else:
+                    setattr(member_instance, field, value)
 
             return UpdateMember(member=member_instance, success=success)
         else:
