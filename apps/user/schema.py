@@ -46,9 +46,8 @@ class UserQueries(graphene.ObjectType):
 
 class CreateMember(graphene.Mutation):
     class Arguments:
-        email = graphene.String(required=True)
+        email = graphene.String()
         firebase_id = graphene.String(required=True)
-        nickname = graphene.String()
 
     member = graphene.Field(MemberType)
     success = graphene.Boolean()
