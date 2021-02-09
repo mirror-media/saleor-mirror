@@ -17,14 +17,12 @@ Gender = ((1,'male'), (2,'female'), (0, None), (3, 'Not provided'))
 
 
 class CustomUser(AbstractUser):
-    class Meta:
-        unique_together = ['firebase_id', 'email']
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
     email = models.EmailField(_('email address'), null=True)
-    firebase_id = models.TextField(null=True)
+    firebase_id = models.TextField(null=True, unique=True)
 
     nickname = models.TextField(null=True)
     name = models.TextField(null=True)
