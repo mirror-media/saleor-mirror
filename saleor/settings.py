@@ -80,7 +80,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'apps.common',
     'apps.userprofile',
-    'apps.user'
+    'apps.user',
+    'keygen',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'
