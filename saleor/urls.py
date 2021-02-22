@@ -19,7 +19,6 @@ else:
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     # path('', HomeView.as_view(), name='home'),
     # path('dashboard/', DashboardView.as_view(), name='dashboard'),
     #

@@ -75,6 +75,7 @@ THIRD_PARTY_APPS = [
     'background_task',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'graphql_auth',  # Django-GraphQL-Auth must be installed
+    'django_crontab'
 ]
 
 LOCAL_APPS = [
@@ -87,6 +88,11 @@ LOCAL_APPS = [
 AUTH_USER_MODEL = 'user.CustomUser'
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
+CRONJOBS = [
+    ('*/1 * * * *', 'saleor.cron.delete_member'),
+    # ('*/1 * * * *', 'saleor.cron.cron_simple')
+]
 
 MIDDLEWARE = [
     'allow_cidr.middleware.AllowCIDRMiddleware',

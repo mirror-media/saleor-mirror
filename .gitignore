@@ -31,6 +31,7 @@ dist/
 /media/
 /node_modules//static/
 .vscode/
+*.code-workspace
 .idea/
 # Exported results file
 django-queries-results.html
