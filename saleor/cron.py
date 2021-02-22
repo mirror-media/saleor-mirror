@@ -6,12 +6,11 @@ import os
 
 # https://googleapis.dev/python/pubsub/latest/index.html
 
-# os.environ[
-#     'GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(
-#     os.path.split(os.path.abspath(__file__))[0],
-#     'configs/saleor_keyfile.json')
 os.environ[
-    'GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/andy/mirror/saleor-mirror/configs/saleor_keyfile.json'
+    'GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(
+    os.path.split(os.path.abspath(__file__))[0],
+    'configs/saleor_keyfile.json')
+
 
 PROJECT_ID = 'mirrormedia-1470651750304'
 timeout = 60
