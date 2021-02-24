@@ -20,13 +20,15 @@ timeout = 60
 def process_deletion(message: Message):
     firebase_id = message.attributes.get('firebaseID')
     action = message.attributes.get('action', 'delete')  # String
-    message.ack()
+    # message.ack()
 
     if action == 'delete':
         CustomUser.objects.get(firebase_id=firebase_id).delete()
         print(f"Member with firebase id {firebase_id} is deleted ")
+        message.ack()
         return firebase_id
     else:
+        message.nack()
         return "Error"
 
 
