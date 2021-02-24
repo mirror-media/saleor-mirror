@@ -50,7 +50,4 @@ ARG GOOGLE_APPLICATION_CREDENTIALS
 
 EXPOSE 8000
 ENV PYTHONUNBUFFERED 1
-# RUN python3 manage.py graphql_schema
 CMD gunicorn saleor.asgi:application --bind :8000  --workers 4 -k uvicorn.workers.UvicornWorker
-
-#CMD ["gunicorn", "--bind", ":8000", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "saleor.asgi:application"]

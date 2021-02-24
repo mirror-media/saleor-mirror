@@ -38,7 +38,7 @@ type Mutation {
   tokenRefresh(refreshToken: String!): RefreshToken
   tokenVerify(token: String!): VerifyToken
   member: member
-  createMember(email: String!, firebaseId: String!, nickname: String): CreateMember
+  createMember(email: String, firebaseId: String!): CreateMember
   updateMember(address: String, birthday: Date, city: String, country: String, district: String, firebaseId: String!, gender: Int, name: String, nickname: String, phone: String, profileImage: String): UpdateMember
   deleteMember(firebaseId: String!): DeleteMember
   verifyMember(token: String!): VerifyAccount
@@ -57,12 +57,14 @@ interface Node {
 }
 
 type ObtainJSONWebToken {
-  token: String
+  payload: GenericScalar!
+  refreshExpiresIn: Int!
   success: Boolean
   errors: ExpectedErrorType
   user: UserNode
   unarchiving: Boolean
-  refreshToken: String
+  token: String!
+  refreshToken: String!
 }
 
 type Query {
@@ -70,15 +72,16 @@ type Query {
 }
 
 type RefreshToken {
-  token: String
-  payload: GenericScalar
+  payload: GenericScalar!
+  refreshExpiresIn: Int!
   success: Boolean
   errors: ExpectedErrorType
-  refreshToken: String
+  token: String!
+  refreshToken: String!
 }
 
 type RevokeToken {
-  revoked: Int
+  revoked: Int!
   success: Boolean
   errors: ExpectedErrorType
 }
@@ -136,7 +139,7 @@ type VerifySecondaryEmail {
 }
 
 type VerifyToken {
-  payload: GenericScalar
+  payload: GenericScalar!
   success: Boolean
   errors: ExpectedErrorType
 }
