@@ -37,7 +37,8 @@ DEBUG = _DEBUG
 ALLOW_PASSWORDLESS_REGISTRATION = True
 REGISTER_MUTATION_FIELDS = 'email'
 
-ALLOWED_HOSTS = ['127.0.0.1','104.155.209.114','35.201.139.78','localhost','saleor-mirror.default.svc.cluster.local']
+ALLOWED_HOSTS = ['127.0.0.1', '104.155.209.114', '35.201.139.78', 'localhost',
+                 'saleor-mirror.default.svc.cluster.local']
 ALLOWED_CIDR_NETS = ['10.0.0.0/8']
 
 _DEFAULT_CLIENT_HOSTS = ALLOWED_HOSTS
@@ -72,10 +73,8 @@ THIRD_PARTY_APPS = [
     'social_django',
     "graphene_django",
     'graphql_playground',
-    'background_task',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
     'graphql_auth',  # Django-GraphQL-Auth must be installed
-    'django_crontab'
 ]
 
 LOCAL_APPS = [
@@ -88,11 +87,6 @@ LOCAL_APPS = [
 AUTH_USER_MODEL = 'user.CustomUser'
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
-
-CRONJOBS = [
-    ('*/1 * * * *', 'saleor.cron.delete_member'),
-    # ('*/1 * * * *', 'saleor.cron.cron_simple')
-]
 
 MIDDLEWARE = [
     'allow_cidr.middleware.AllowCIDRMiddleware',
@@ -191,7 +185,7 @@ GRAPHQL_AUTH = {
     'ALLOW_PASSWORDLESS_REGISTRATION': True,
     'REGISTER_MUTATION_FIELDS': ['email'],
 
-    'UPDATE_MUTATION_FIELDS': {'firebase_id':"String"},
+    'UPDATE_MUTATION_FIELDS': {'firebase_id': "String"},
 
 }
 
