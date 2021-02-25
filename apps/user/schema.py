@@ -19,7 +19,7 @@ app_settings = GraphQLAuthSettings(None, DEFAULTS)
 delete_signal = ''
 
 
-def md5(email):
+def md5(email=''):
     m = hashlib.md5()
     encoding = (email + str(datetime.datetime.now().timestamp())).encode('utf-8')
     m.update(encoding)
@@ -79,7 +79,10 @@ class CreateMember(graphene.Mutation):
 
 
 def delete_update(member: CustomUser):
-    member.email = md5(member.email)
+    if member.email:
+        member.email = md5(member.email)
+    else:
+        member.email = md5()
     member.name = None
     member.gender = 3
     member.phone = None
