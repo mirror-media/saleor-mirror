@@ -78,6 +78,22 @@ class CreateMember(graphene.Mutation):
                 raise dberror
 
 
+def delete_update(member: CustomUser):
+    member.email = md5(member.email)
+    member.name = None
+    member.gender = 3
+    member.phone = None
+    member.country = None
+    member.city = None
+    member.district = None
+    member.address = None
+    member.profile_image = None
+    member.is_active = False
+    member.nickname = None
+    member.firebase_id = f"Deleted-{member.firebase_id}"
+    member.save()
+
+
 class DeleteMember(graphene.Mutation):
     success = graphene.Boolean()
 
@@ -88,20 +104,8 @@ class DeleteMember(graphene.Mutation):
     # @superuser_required
     def mutate(cls, root, info, firebase_id):
         member_instance = CustomUser.objects.get(firebase_id=firebase_id)
-        if member_instance and member_instance.is_active==True:
-            member_instance.email = md5(member_instance.email)
-            member_instance.name = None
-            member_instance.gender = 3
-            member_instance.phone = None
-            member_instance.country = None
-            member_instance.city = None
-            member_instance.district = None
-            member_instance.address = None
-            member_instance.profile_image = None
-            member_instance.is_active = False
-            member_instance.nickname = None
-            member_instance.firebase_id = f"Deleted-{member_instance.firebase_id}"
-            member_instance.save()
+        if member_instance and member_instance.is_active == True:
+            delete_update(member_instance)
 
             return cls(success=True)
         else:

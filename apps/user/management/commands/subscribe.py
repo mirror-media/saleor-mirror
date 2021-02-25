@@ -5,6 +5,8 @@ from django.core.management import BaseCommand
 from apps.user.models import CustomUser
 from google.cloud import pubsub_v1
 from google.cloud.pubsub_v1.subscriber.message import Message
+
+from apps.user.schema import md5, delete_update
 from configs.configs import ENV
 import os
 from configs.configs import GCP_KEYFILE_PATH
@@ -23,7 +25,10 @@ def process_deletion(message: Message):
     # message.ack()
 
     if action == 'delete':
-        CustomUser.objects.get(firebase_id=firebase_id).delete()
+        member_instance = CustomUser.objects.get(firebase_id=firebase_id)
+        if member_instance and member_instance.is_active == True:
+            delete_update(member_instance)
+
         print(f"Member with firebase id {firebase_id} is deleted ")
         message.ack()
         return firebase_id
