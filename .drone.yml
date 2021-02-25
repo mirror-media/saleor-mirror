@@ -91,7 +91,7 @@ pipeline:
     template: >
       {{#success build.status}}
         *success* ${DRONE_REPO_NAME}:${DRONE_BRANCH}_${DRONE_COMMIT_AUTHOR}_${DRONE_BUILD_NUMBER} was well served.
-        Check out our new <https://saleorbackend-dev.mirrormedia.mg/admin|Saleor Backend>.
+        Check out our new <http://104.155.209.114/graphql |Saleor Backend>.
       {{else}}
         Houston, we have a problem. Build <${DRONE_BUILD_LINK}|#{{build.number}}> failed.
       {{/success}}
