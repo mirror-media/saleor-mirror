@@ -51,7 +51,7 @@ kind: Pod
 metadata:
   name: saleor-subscribe
   labels:
-    purpose: subscribe pub/sub
+    purpose: subscribe
 spec:
   containers:
   - name: {{.app}}
