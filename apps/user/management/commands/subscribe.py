@@ -25,13 +25,16 @@ def process_deletion(message: Message):
     # message.ack()
 
     if action == 'delete':
-        member_instance = CustomUser.objects.get(firebase_id=firebase_id)
-        if member_instance and member_instance.is_active == True:
-            delete_update(member_instance)
+        try:
+            member_instance = CustomUser.objects.get(firebase_id=firebase_id)
+            if member_instance and member_instance.is_active == True:
+                delete_update(member_instance)
 
-        print(f"Member with firebase id {firebase_id} is deleted ")
-        message.ack()
-        return firebase_id
+            print(f"Member with firebase id {firebase_id} is deleted")
+            message.ack()
+            return firebase_id
+        except CustomUser.DoesNotExist:
+            print(f"Member with firebase id {firebase_id} does not exist")
     else:
         message.nack()
         return "Error"
