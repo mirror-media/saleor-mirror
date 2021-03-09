@@ -8,12 +8,9 @@ import os
 import requests
 from background_task import background
 from graphql_jwt.shortcuts import get_refresh_token
+from configs.configs import GCP_KEYFILE_PATH
 
-os.environ[
-    'GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(
-    os.path.split(os.path.abspath(__file__))[0],
-    'configs/saleor_keyfile.json')
-# '/Users/andy/mirror/saleor-mirror/configs/saleor_keyfile.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GCP_KEYFILE_PATH
 
 PROJECT_ID = 'mirrormedia-1470651750304'
 timeout = 60
