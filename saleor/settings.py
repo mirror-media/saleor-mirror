@@ -149,7 +149,8 @@ GRAPHENE = {
     "SCHEMA": "saleor.schema.schema",
     "SCHEMA_OUTPUT": './schema.graphql',
     'MIDDLEWARE': [
-        'graphql_jwt.middleware.JSONWebTokenMiddleware',  # JWT
+        # 'graphql_jwt.middleware.JSONWebTokenMiddleware',  # JWT
+        'StrictJWT.middleware.StrictMiddleware'
     ],
 }
 
