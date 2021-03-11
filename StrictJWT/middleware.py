@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.middleware import get_user
 from django.contrib.auth.models import AnonymousUser
 from django.utils.translation import gettext as _
-from graphql_jwt.path import PathDict
 from graphql_jwt.settings import jwt_settings
 from graphql_jwt.utils import get_token_argument
 
@@ -18,9 +17,12 @@ def get_http_authorization(request):
     auth = request.META.get(jwt_settings.JWT_AUTH_HEADER_NAME, '').split()
     prefix = jwt_settings.JWT_AUTH_HEADER_PREFIX
 
+    if len(auth) != 2:
+        raise JSONWebTokenError(_(f'Invalid HTTP Authorization header'))
+
     if auth[0].lower() != prefix.lower():
         print("FALSE TOKEN")
-        raise JSONWebTokenError(_(f'Incorrect HTTP Autherization Header: {auth[0]}'))
+        raise JSONWebTokenError(_(f'Incorrect HTTP Authorization header prefix: {auth[0]}'))
     return auth[1]
 
 
