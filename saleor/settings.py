@@ -37,7 +37,7 @@ DEBUG = _DEBUG
 ALLOW_PASSWORDLESS_REGISTRATION = True
 REGISTER_MUTATION_FIELDS = 'email'
 
-ALLOWED_HOSTS = ['127.0.0.1', '104.155.209.114', '35.201.139.78', 'localhost',
+ALLOWED_HOSTS = ['127.0.0.1', '104.155.209.114', 'saleor-dashboard.default.svc.cluster.local', 'localhost',
                  'saleor-mirror.default.svc.cluster.local']
 ALLOWED_CIDR_NETS = ['10.0.0.0/8']
 
@@ -158,8 +158,10 @@ GRAPHENE = {
     ],
 }
 
-ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', '35.201.139.78']
+ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', 'saleor-dashboard.default.svc.cluster.local']
 CORS_ALLOWED_ORIGIN = ALLOWED_GRAPHQL_ORIGINS
+
+CORS_ORIGIN_WHITELIST = ALLOWED_GRAPHQL_ORIGINS
 
 GRAPHQL_JWT = {
     "JWT_ALGORITHM": "ES384",
