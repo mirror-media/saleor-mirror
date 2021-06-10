@@ -69,6 +69,7 @@ DEFAULT_APPS = [
 
 THIRD_PARTY_APPS = [
     # 'crispy_forms',
+    'corsheaders',
     'django_cleanup',
     'social_django',
     "graphene_django",
@@ -99,6 +100,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'social_django.middleware.SocialAuthExceptionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'saleor.urls'
@@ -155,6 +159,7 @@ GRAPHENE = {
 }
 
 ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', '35.201.139.78']
+CORS_ALLOWED_ORIGIN = ALLOWED_GRAPHQL_ORIGINS
 
 GRAPHQL_JWT = {
     "JWT_ALGORITHM": "ES384",

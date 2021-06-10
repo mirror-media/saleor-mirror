@@ -9,7 +9,7 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 3000
+    targetPort: 8000
   clusterIP: 10.11.240.206
   type: LoadBalancer
 ---
@@ -36,7 +36,7 @@ spec:
         imagePullPolicy: IfNotPresent
         name: {{.app}}
         ports:
-        - containerPort: 3000
+        - containerPort: 8000
           protocol: TCP
       terminationGracePeriodSeconds: 30
   minReadySeconds: 20
