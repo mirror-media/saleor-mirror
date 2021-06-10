@@ -16,6 +16,7 @@ requests-oauthlib==1.3.0
 six==1.15.0
 psycopg2-binary
 django-graphql-auth
+django-cors-headers
 social-auth-app-django==3.1.0
 social-auth-core==3.2.0
 sqlparse==0.3.0
@@ -38,7 +39,7 @@ google-cloud-pubsub
 dj-config-url~=0.1.1
 pytimeparse~=1.1.8
 django-graphql-playground
-django-graphql-jwt
+django-graphql-jwt==0.3.0
 opentracing~=2.4.0
 gunicorn~=20.0.4
 uvloop
