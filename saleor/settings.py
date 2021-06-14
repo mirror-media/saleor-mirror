@@ -95,6 +95,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware', #CORS
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # JWT
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -158,7 +159,7 @@ GRAPHENE = {
     ],
 }
 
-ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', 'saleor-dashboard.default.svc.cluster.local']
+ALLOWED_GRAPHQL_ORIGINS = ['104.155.209.114', '35.201.139.78']
 CORS_ALLOWED_ORIGIN = ALLOWED_GRAPHQL_ORIGINS
 
 CORS_ORIGIN_WHITELIST = ALLOWED_GRAPHQL_ORIGINS
