@@ -5,7 +5,7 @@ from pytimeparse import parse
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 from configs.configs import _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
-    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION
+    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION, ALLOWED_GRAPHQL_ORIGINS
 
 
 def get_list(text):
@@ -160,7 +160,6 @@ GRAPHENE = {
 }
 
 # CORS
-ALLOWED_GRAPHQL_ORIGINS = ['http://104.155.209.114', 'http://35.201.139.78']
 CORS_ALLOWED_ORIGIN = ALLOWED_GRAPHQL_ORIGINS
 CORS_ORIGIN_WHITELIST = ALLOWED_GRAPHQL_ORIGINS
 CORS_ALLOW_CREDENTIALS = True

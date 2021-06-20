@@ -28,6 +28,8 @@ from jwt import PyJWTError
 import opentracing
 import opentracing.tags
 
+import configs.configs
+
 unhandled_errors_logger = logging.getLogger("saleor.graphql.errors.unhandled")
 handled_errors_logger = logging.getLogger("saleor.graphql.errors.handled")
 
@@ -95,7 +97,7 @@ class GraphQLView(View):
             return HttpResponseNotAllowed(["GET", "OPTIONS", "POST"])
         # Add access control headers
         if "HTTP_ORIGIN" in request.META:
-            for origin in settings.ALLOWED_GRAPHQL_ORIGINS:
+            for origin in configs.configs.ALLOWED_GRAPHQL_ORIGINS:
                 if fnmatch.fnmatchcase(request.META["HTTP_ORIGIN"], origin):
                     response["Access-Control-Allow-Origin"] = request.META[
                         "HTTP_ORIGIN"
