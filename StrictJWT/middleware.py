@@ -27,8 +27,30 @@ def get_http_authorization(request):
 
 
 class StrictMiddleware(JSONWebTokenMiddleware):
+    ALLOWED_MUTATIONS = [
+        # "checkoutAddPromoCode",
+        # "checkoutBillingAddressUpdate",
+        # "checkoutComplete",
+        # "checkoutCreate",
+        # "checkoutCustomerAttach",
+        # "checkoutCustomerDetach",
+        # "checkoutEmailUpdate",
+        # "checkoutLineDelete",
+        # "checkoutLinesAdd",
+        # "checkoutLinesUpdate",
+        # "checkoutRemovePromoCode",
+        # "checkoutPaymentCreate",
+        # "checkoutShippingAddressUpdate",
+        # "checkoutShippingMethodUpdate",
+        "tokenCreate",
+        "tokenVerify",
+    ]
 
     def resolve(self, next, root, info, **kwargs):
+        operation = info.operation.operation
+        if operation != "mutation":
+            return next(root, info, **kwargs)
+
         context = info.context
         token_argument = get_token_argument(context, **kwargs)
 
@@ -55,5 +77,12 @@ class StrictMiddleware(JSONWebTokenMiddleware):
 
                 if jwt_settings.JWT_ALLOW_ARGUMENT:
                     self.cached_authentication.insert(info.path, user)
+        for selection in info.operation.selection_set.selections:
+            selection_name = str(selection.name.value)
+            blocked = selection_name not in self.ALLOWED_MUTATIONS
+            if blocked:
+                raise Exception(
+                    "Be aware admin pirate! API runs in read-only mode!"
+                )
 
         return next(root, info, **kwargs)
