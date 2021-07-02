@@ -50,5 +50,5 @@ ARG GOOGLE_APPLICATION_CREDENTIALS
 
 EXPOSE 8000
 ENV PYTHONUNBUFFERED 1
-RUN python manage.py collectstatic --noinput
+#RUN python manage.py collectstatic --noinput
 CMD gunicorn saleor.asgi:application --bind :8000  --workers 4 -k uvicorn.workers.UvicornWorker
