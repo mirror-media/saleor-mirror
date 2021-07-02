@@ -29,7 +29,7 @@ dist/
 *\.egg*
 # data
 /media/
-/node_modules//static/
+/node_modules//saleor/static/
 .vscode/
 *.code-workspace
 .idea/
