@@ -55,8 +55,6 @@ if not ALLOWED_CLIENT_HOSTS:
 
 INTERNAL_IPS = get_list(os.environ.get("INTERNAL_IPS", "127.0.0.1"))
 
-# CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 # Application definition
 DEFAULT_APPS = [
     'django.contrib.admin',
@@ -80,6 +78,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'apps.common',
+    # 'apps.shop'
     'apps.userprofile',
     'apps.user',
     'keygen',
@@ -99,7 +98,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # JWT
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
@@ -163,6 +162,7 @@ GRAPHENE = {
 CORS_ALLOWED_ORIGIN = ALLOWED_GRAPHQL_ORIGINS
 CORS_ORIGIN_WHITELIST = ALLOWED_GRAPHQL_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['http_authorization','authorization','content-type']
 
 GRAPHQL_JWT = {
     "JWT_ALGORITHM": "ES384",
@@ -193,20 +193,8 @@ GRAPHQL_AUTH = {
     'LOGIN_ALLOWED_FIELDS': ['email', 'username'],
     'ALLOW_PASSWORDLESS_REGISTRATION': True,
     'REGISTER_MUTATION_FIELDS': ['email'],
-
     'UPDATE_MUTATION_FIELDS': {'firebase_id': "String"},
-
 }
-
-# JWT_TTL_ACCESS = timedelta(seconds=parse(os.environ.get("JWT_TTL_ACCESS", "3560 days")))
-# JWT_TTL_APP_ACCESS = timedelta(
-#     seconds=parse(os.environ.get("JWT_TTL_APP_ACCESS", "5 minutes"))
-# )
-# JWT_TTL_REFRESH = timedelta(seconds=parse(os.environ.get("JWT_TTL_REFRESH", "30 days")))
-#
-# JWT_TTL_REQUEST_EMAIL_CHANGE = timedelta(
-#     seconds=parse(os.environ.get("JWT_TTL_REQUEST_EMAIL_CHANGE", "1 hour")),
-# )
 
 LOGIN_URL = '/login/'
 
