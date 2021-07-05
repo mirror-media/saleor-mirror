@@ -80,6 +80,9 @@ LOCAL_APPS = [
     'apps.userprofile',
     'apps.user',
     'keygen',
+    'member_plan',
+    'purchased_article',
+    'paid_record'
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'
