@@ -1,9 +1,7 @@
 from datetime import datetime
 # from graphene import Enum # This is for Graphql v3
-from django.contrib import admin
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User, PermissionsMixin
-from graphene_django import DjangoObjectType
 from django.utils.translation import ugettext_lazy as _
 
 Gender = ((1,'male'), (2,'female'), (0, None), (3, 'Not provided'))
@@ -40,7 +38,7 @@ class CustomUser(AbstractUser):
                                       null=True, blank=True)
 
     def __str__(self):
-        return f"FirebaseID: {self.firebase_id} , name: {self.name}"
+        return self.firebase_id
 
     def anonymize(self):
         self.email = None
@@ -52,7 +50,3 @@ class CustomUser(AbstractUser):
         self.is_active = False
 
         self.save(update_fields=['email', 'name', 'gender', 'phone', 'birthday', 'address', 'is_active'])
-
-
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('id','name', 'email', 'phone')

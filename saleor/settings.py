@@ -4,8 +4,8 @@ from datetime import timedelta
 from pytimeparse import parse
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
-from configs.configs import _SECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
-    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION, ALLOWED_GRAPHQL_ORIGINS
+from configs.configs import SSECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
+    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION, ALLOWED_GRAPHQL_ORIGINS, _STATIC_URL
 
 
 def get_list(text):
@@ -28,7 +28,7 @@ DEBUG = get_bool_from_env("DEBUG", True)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = _SECRET_KEY
+SECRET_KEY = SSECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = _DEBUG
@@ -66,7 +66,6 @@ DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    # 'crispy_forms',
     'corsheaders',
     'django_cleanup',
     'social_django',
@@ -78,7 +77,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'apps.common',
-    # 'apps.shop'
     'apps.userprofile',
     'apps.user',
     'keygen',
@@ -140,9 +138,6 @@ DATABASES = {
         'HOST': DB_HOST,
         'PORT': DB_PORT
     },
-    # 'default': {'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #           'ENGINE': 'django.db.backends.sqlite3'},
-
 }
 
 # ==============GQL=====================
@@ -240,11 +235,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = _STATIC_URL
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Media Files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
