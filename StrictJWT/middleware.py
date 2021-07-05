@@ -42,6 +42,8 @@ class StrictMiddleware(JSONWebTokenMiddleware):
         # "checkoutPaymentCreate",
         # "checkoutShippingAddressUpdate",
         # "checkoutShippingMethodUpdate",
+        "UpdateMember",
+        "DeleteMember",
         "tokenCreate",
         "tokenVerify",
     ]
