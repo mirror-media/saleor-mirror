@@ -19,6 +19,9 @@ urlpatterns = [
 ]
 
 admin.site.site_header = "Saleor Dashboard"
+admin.site.site_title = "Mirrormedia CRM"
+admin.site.index_title = "Saleor Dashboard"
+admin.site.site_url = "https://www.mirrormedia.mg/"
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -68,7 +68,7 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     'corsheaders',
     'django_cleanup',
-    'social_django',
+    # 'social_django',
     "graphene_django",
     'graphql_playground',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
