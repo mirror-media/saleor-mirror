@@ -227,9 +227,9 @@ var requirejs, require, define;
         return defined[name];
     }
 
-    //Turns a plugin!resource to [plugin, resource]
-    //with the plugin being undefined if the name
-    //did not have a plugin prefix.
+    //Turns a plugins!resource to [plugins, resource]
+    //with the plugins being undefined if the name
+    //did not have a plugins prefix.
     function splitPrefix(name) {
         var prefix,
             index = name ? name.indexOf('!') : -1;
@@ -240,15 +240,15 @@ var requirejs, require, define;
         return [prefix, name];
     }
 
-    //Creates a parts array for a relName where first part is plugin ID,
+    //Creates a parts array for a relName where first part is plugins ID,
     //second part is resource ID. Assumes relName has already been normalized.
     function makeRelParts(relName) {
         return relName ? splitPrefix(relName) : [];
     }
 
     /**
-     * Makes a name map, normalizing the name, and using a plugin
-     * for normalization if necessary. Grabs a ref to plugin
+     * Makes a name map, normalizing the name, and using a plugins
+     * for normalization if necessary. Grabs a ref to plugins
      * too, as an optimization.
      */
     makeMap = function (name, relParts) {
@@ -712,7 +712,7 @@ S2.define('select2/utils',[
   Utils.hasScroll = function (index, el) {
     // Adapted from the function created by @ShadowScripter
     // and adapted by @BillBarry on the Stack Exchange Code Review website.
-    // The original code can be found at
+    // The original core can be found at
     // http://codereview.stackexchange.com/q/13338
     // and was designed to be used with the Sizzle selector engine.
 

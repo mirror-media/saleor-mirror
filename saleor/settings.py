@@ -21,8 +21,7 @@ def get_bool_from_env(name, default_value):
             raise ValueError("{} is an invalid value for {}".format(value, name)) from e
     return default_value
 
-
-DEBUG = get_bool_from_env("DEBUG", True)
+SITE_ID = 1
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +35,9 @@ DEBUG = _DEBUG
 # Register
 ALLOW_PASSWORDLESS_REGISTRATION = True
 REGISTER_MUTATION_FIELDS = 'email'
+
+DEFAULT_MAX_DIGITS = 12
+DEFAULT_DECIMAL_PLACES = 2
 
 ALLOWED_HOSTS = ['127.0.0.1', '104.155.209.114', 'saleor-dashboard.default.svc.cluster.local', 'localhost',
                  'saleor-mirror.default.svc.cluster.local']
@@ -62,6 +64,7 @@ DEFAULT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 ]
 
@@ -79,7 +82,15 @@ LOCAL_APPS = [
     'apps.common',
     'apps.userprofile',
     'apps.user',
+    'apps.order',
+    'apps.product',
+    'apps.checkout',
+    'apps.discount',
+    'apps.payment',
     'keygen',
+    # 'member_plan',
+    # 'purchased_article',
+    # 'paid_record'
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

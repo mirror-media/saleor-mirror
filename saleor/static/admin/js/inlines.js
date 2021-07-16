@@ -186,7 +186,7 @@
         return this;
     };
 
-    /* Setup plugin defaults */
+    /* Setup plugins defaults */
     $.fn.formset.defaults = {
         prefix: "form", // The form prefix for your django formset
         addText: "add another", // Text for the add link

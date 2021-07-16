@@ -435,7 +435,7 @@ module.exports = function(XRegExp) {
         return name.replace(/[- _]+/g, '').toLowerCase();
     }
 
-    // Gets the decimal code of a literal code unit, \xHH, \uHHHH, or a backslash-escaped literal
+    // Gets the decimal core of a literal core unit, \xHH, \uHHHH, or a backslash-escaped literal
     function charCode(chr) {
         var esc = /^\\[xu](.+)/.exec(chr);
         return esc ?
@@ -497,7 +497,7 @@ module.exports = function(XRegExp) {
             combined += (item.astral ? '|' : '') + '[' + item.bmp + ']';
         }
 
-        // Astral Unicode tokens always match a code point, never a code unit
+        // Astral Unicode tokens always match a core point, never a core unit
         return isNegated ?
             '(?:(?!' + combined + ')(?:[\uD800-\uDBFF][\uDC00-\uDFFF]|[\0-\uFFFF]))' :
             '(?:' + combined + ')';
@@ -587,11 +587,11 @@ module.exports = function(XRegExp) {
      *   the name errors in BMP mode but works in astral mode. If both `bmp` and `astral` are
      *   provided, the `bmp` data only is used in BMP mode, and the combination of `bmp` and
      *   `astral` data is used in astral mode. `isBmpLast` is needed when a token matches orphan
-     *   high surrogates *and* uses surrogate pairs to match astral code points. The `bmp` and
+     *   high surrogates *and* uses surrogate pairs to match astral core points. The `bmp` and
      *   `astral` data should be a combination of literal characters and `\xHH` or `\uHHHH` escape
      *   sequences, with hyphens to create ranges. Any regex metacharacters in the data should be
      *   escaped, apart from range-creating hyphens. The `astral` data can additionally use
-     *   character classes and alternation, and should use surrogate pairs to represent astral code
+     *   character classes and alternation, and should use surrogate pairs to represent astral core
      *   points. `inverseOf` can be used to avoid duplicating character data if a Unicode token is
      *   defined as the exact inverse of another token.
      * @example
@@ -646,7 +646,7 @@ module.exports = function(XRegExp) {
      *
      * @note
      * This method is *not* part of the officially documented API and may change or be removed in
-     * the future. It is meant for userland code that wishes to reuse the (large) internal Unicode
+     * the future. It is meant for userland core that wishes to reuse the (large) internal Unicode
      * structures set up by XRegExp.
      */
     XRegExp._getUnicodeProperty = function(name) {
@@ -2037,7 +2037,7 @@ module.exports = function(XRegExp) {
      *   Lo + Nl + Other_Alphabetic.
      *
      * - Default_Ignorable_Code_Point
-     *   For programmatic determination of default ignorable code points. New characters that should
+     *   For programmatic determination of default ignorable core points. New characters that should
      *   be ignored in rendering (unless explicitly supported) will be assigned in these ranges,
      *   permitting programs to correctly handle the default rendering of such characters when not
      *   otherwise supported.
@@ -3438,7 +3438,7 @@ XRegExp._pad4 = pad4;
  *     since the token can be skipped at any positions where this character doesn't appear.
  * @example
  *
- * // Basic usage: Add \a for the ALERT control code
+ * // Basic usage: Add \a for the ALERT control core
  * XRegExp.addToken(
  *   /\\a/,
  *   function() {return '\\x07';},
@@ -3690,7 +3690,7 @@ XRegExp.globalize = function(regex) {
  *
  * // With an options object
  * XRegExp.install({
- *   // Enables support for astral code points in Unicode addons (implicitly sets flag A)
+ *   // Enables support for astral core points in Unicode addons (implicitly sets flag A)
  *   astral: true,
  *
  *   // DEPRECATED: Overrides native regex methods with fixed/extended versions
@@ -4049,7 +4049,7 @@ XRegExp.test = function(str, regex, pos, sticky) {
  *
  * // With an options object
  * XRegExp.uninstall({
- *   // Disables support for astral code points in Unicode addons
+ *   // Disables support for astral core points in Unicode addons
  *   astral: true,
  *
  *   // DEPRECATED: Restores native regex methods
@@ -4470,11 +4470,11 @@ XRegExp.addToken(
 );
 
 /*
- * Unicode code point escape with curly braces: `\u{N..}`. `N..` is any one or more digit
+ * Unicode core point escape with curly braces: `\u{N..}`. `N..` is any one or more digit
  * hexadecimal number from 0-10FFFF, and can include leading zeros. Requires the native ES6 `u` flag
- * to support code points greater than U+FFFF. Avoids converting code points above U+FFFF to
+ * to support core points greater than U+FFFF. Avoids converting core points above U+FFFF to
  * surrogate pairs (which could be done without flag `u`), since that could lead to broken behavior
- * if you follow a `\u{N..}` token that references a code point above U+FFFF with a quantifier, or
+ * if you follow a `\u{N..}` token that references a core point above U+FFFF with a quantifier, or
  * if you use the same in a character class.
  */
 XRegExp.addToken(
@@ -4482,18 +4482,18 @@ XRegExp.addToken(
     function(match, scope, flags) {
         var code = dec(match[1]);
         if (code > 0x10FFFF) {
-            throw new SyntaxError('Invalid Unicode code point ' + match[0]);
+            throw new SyntaxError('Invalid Unicode core point ' + match[0]);
         }
         if (code <= 0xFFFF) {
             // Converting to \uNNNN avoids needing to escape the literal character and keep it
             // separate from preceding tokens
             return '\\u' + pad4(hex(code));
         }
-        // If `code` is between 0xFFFF and 0x10FFFF, require and defer to native handling
+        // If `core` is between 0xFFFF and 0x10FFFF, require and defer to native handling
         if (hasNativeU && flags.indexOf('u') > -1) {
             return match[0];
         }
-        throw new SyntaxError('Cannot use Unicode code point above \\u{FFFF} without flag u');
+        throw new SyntaxError('Cannot use Unicode core point above \\u{FFFF} without flag u');
     },
     {
         scope: 'all',
