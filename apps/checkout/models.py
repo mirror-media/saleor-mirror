@@ -77,13 +77,6 @@ class Checkout(ModelWithMetadata):
     #     on_delete=models.SET_NULL,
     # )
     note = models.TextField(blank=True, default="")
-
-    # currency = models.CharField(
-    #     max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
-    #     default=settings.DEFAULT_CURRENCY,
-    # )
-    # country = CountryField(default=get_default_country)
-
     discount_amount = models.DecimalField(
         max_digits=settings.DEFAULT_MAX_DIGITS,
         decimal_places=settings.DEFAULT_DECIMAL_PLACES,
@@ -94,8 +87,6 @@ class Checkout(ModelWithMetadata):
 
     translated_discount_name = models.CharField(max_length=255, blank=True, null=True)
     voucher_code = models.CharField(max_length=12, blank=True, null=True)
-    # gift_cards = models.ManyToManyField(GiftCard, blank=True, related_name="checkouts")
-
     objects = CheckoutQueryset.as_manager()
 
     class Meta:
@@ -116,22 +107,6 @@ class Checkout(ModelWithMetadata):
     def is_shipping_required(self) -> bool:
         """Return `True` if any of the lines requires shipping."""
         return any(line.is_shipping_required() for line in self)
-
-    # def get_total_gift_cards_balance(self) -> Money:
-    #     """Return the total balance of the gift cards assigned to the checkout."""
-    #     balance = self.gift_cards.aggregate(models.Sum("current_balance_amount"))[
-    #         "current_balance_amount__sum"
-    #     ]
-    #     if balance is None:
-    #         return zero_money(currency=self.currency)
-    #     return Money(balance, self.currency)
-
-    # def get_total_weight(self) -> "Weight":
-    #     # Cannot use `sum` as it parses an empty Weight to an int
-    #     weights = zero_weight()
-    #     for line in self:
-    #         weights += line.variant.get_weight() * line.quantity
-    #     return weights
 
     def get_line(self, variant: "ProductVariant") -> Optional["CheckoutLine"]:
         """Return a line matching the given variant and data if any."""

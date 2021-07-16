@@ -12,7 +12,7 @@ from django.utils.text import slugify
 from django_measurement.models import MeasurementField
 from django_prices.models import MoneyField
 from draftjs_sanitizer import clean_draft_js
-from measurement.measures import Weight
+# from measurement.measures import Weight
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 from prices import MoneyRange
@@ -27,7 +27,7 @@ from ..core.models import (
     SortableModel,
 )
 from ..core.permissions import ProductPermissions
-from ..core.utils import build_absolute_uri
+# from ..core.utils import build_absolute_uri
 from ..core.utils.draftjs import json_content_to_raw_text
 # from ..core.utils.translations import TranslationProxy
 # from ..core.weight import WeightUnits, zero_weight
@@ -492,9 +492,9 @@ class DigitalContentUrl(models.Model):
             self.token = str(uuid4()).replace("-", "")
         super().save(force_insert, force_update, using, update_fields)
 
-    def get_absolute_url(self) -> Optional[str]:
-        url = reverse("digital-product", kwargs={"token": str(self.token)})
-        return build_absolute_uri(url)
+    # def get_absolute_url(self) -> Optional[str]:
+    #     url = reverse("digital-product", kwargs={"token": str(self.token)})
+    #     return build_absolute_uri(url)
 
 
 class BaseAttributeQuerySet(models.QuerySet):

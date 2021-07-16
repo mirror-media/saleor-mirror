@@ -181,18 +181,6 @@ class SaleQueryset(models.QuerySet):
         return self.filter(end_date__lt=date, start_date__lt=date)
 
 
-class VoucherTranslation(models.Model):
-    language_code = models.CharField(max_length=10)
-    name = models.CharField(max_length=255, null=True, blank=True)
-    voucher = models.ForeignKey(
-        Voucher, related_name="translations", on_delete=models.CASCADE
-    )
-
-    class Meta:
-        ordering = ("language_code", "voucher")
-        unique_together = (("language_code", "voucher"),)
-
-
 class Sale(models.Model):
     name = models.CharField(max_length=255)
     type = models.CharField(

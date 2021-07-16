@@ -99,7 +99,7 @@ class Payment(models.Model):
         return max(self.transactions.all(), default=None, key=attrgetter("pk"))
 
     def get_total(self):
-        return Money(self.total, self.currency or settings.DEFAULT_CURRENCY)
+        return Money(self.total, "TWD")
 
     def get_authorized_amount(self):
         money = zero_money()
@@ -195,7 +195,6 @@ class Transaction(models.Model):
     kind = models.CharField(max_length=10, choices=TransactionKind.CHOICES)
     is_success = models.BooleanField(default=False)
     action_required = models.BooleanField(default=False)
-    currency = models.CharField(max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH)
     amount = models.DecimalField(
         max_digits=settings.DEFAULT_MAX_DIGITS,
         decimal_places=settings.DEFAULT_DECIMAL_PLACES,
@@ -220,4 +219,4 @@ class Transaction(models.Model):
         )
 
     def get_amount(self):
-        return Money(self.amount, self.currency or settings.DEFAULT_CURRENCY)
+        return Money(self.amount, "TWD")
