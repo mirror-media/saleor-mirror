@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.contrib.postgres.aggregates import StringAgg
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.db import models
 from django.db.models import Case, Count, F, FilteredRelation, Q, Value, When
 from django.urls import reverse
