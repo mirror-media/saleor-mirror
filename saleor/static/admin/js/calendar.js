@@ -133,7 +133,7 @@ depends on core.js for utility functions like removeChildren or quickElement
                 currentDay++;
             }
 
-            // Draw blanks after end of month (optional, but makes for valid code)
+            // Draw blanks after end of month (optional, but makes for valid core)
             while (tableRow.childNodes.length < 7) {
                 nonDayCell = quickElement('td', tableRow, ' ');
                 nonDayCell.className = "nonday";
