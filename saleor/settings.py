@@ -22,7 +22,6 @@ def get_bool_from_env(name, default_value):
     return default_value
 
 SITE_ID = 1
-DEBUG = get_bool_from_env("DEBUG", True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
