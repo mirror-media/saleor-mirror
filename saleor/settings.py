@@ -37,6 +37,9 @@ DEBUG = _DEBUG
 ALLOW_PASSWORDLESS_REGISTRATION = True
 REGISTER_MUTATION_FIELDS = 'email'
 
+DEFAULT_MAX_DIGITS = 12
+DEFAULT_DECIMAL_PLACES = 2
+
 ALLOWED_HOSTS = ['127.0.0.1', '104.155.209.114', 'saleor-dashboard.default.svc.cluster.local', 'localhost',
                  'saleor-mirror.default.svc.cluster.local']
 ALLOWED_CIDR_NETS = ['10.0.0.0/8']
@@ -62,6 +65,7 @@ DEFAULT_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 ]
 
@@ -79,10 +83,14 @@ LOCAL_APPS = [
     'apps.common',
     'apps.userprofile',
     'apps.user',
+    'apps.order',
+    'apps.product',
+    'apps.checkout',
+    'apps.discount',
     'keygen',
-    'member_plan',
-    'purchased_article',
-    'paid_record'
+    # 'member_plan',
+    # 'purchased_article',
+    # 'paid_record'
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'
