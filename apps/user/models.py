@@ -52,9 +52,9 @@ class CustomUser(AbstractUser):
         self.save(update_fields=['email', 'name', 'gender', 'phone', 'birthday', 'address', 'is_active'])
 
 
-class PaidRecords(models):
-    member_id = models.ForeignKey('CustomUser', to=CustomUser.firebase_id,
-                                  on_delete=models.SET_NULL)
-    type = models.CharField()
-    amount = models.IntegerField()
-    date = models.DateTimeField()
+# class PaidRecords(models):
+#     member_id = models.ForeignKey('CustomUser', to=CustomUser.firebase_id,
+#                                   on_delete=models.SET_NULL)
+#     type = models.CharField()
+#     amount = models.IntegerField()
+#     date = models.DateTimeField()
