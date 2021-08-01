@@ -5,7 +5,8 @@ from pytimeparse import parse
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 from configs.configs import SSECRET_KEY, DB_NAME, DB_USER, DB_PWD, DB_HOST, \
-    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION, ALLOWED_GRAPHQL_ORIGINS, _STATIC_URL
+    DB_PORT, _DEBUG, JWT_EXPIRATION, JWT_REFRESH_EXPIRATION, \
+    ALLOWED_GRAPHQL_ORIGINS, _STATIC_URL, _ALLOWED_HOSTS
 
 
 def get_list(text):
@@ -20,6 +21,7 @@ def get_bool_from_env(name, default_value):
         except ValueError as e:
             raise ValueError("{} is an invalid value for {}".format(value, name)) from e
     return default_value
+
 
 SITE_ID = 1
 
@@ -39,8 +41,8 @@ REGISTER_MUTATION_FIELDS = 'email'
 DEFAULT_MAX_DIGITS = 12
 DEFAULT_DECIMAL_PLACES = 2
 
-ALLOWED_HOSTS = ['127.0.0.1', '104.155.209.114', 'saleor-dashboard.default.svc.cluster.local', 'localhost',
-                 'saleor-mirror.default.svc.cluster.local']
+ALLOWED_HOSTS = _ALLOWED_HOSTS
+
 ALLOWED_CIDR_NETS = ['10.0.0.0/8']
 
 _DEFAULT_CLIENT_HOSTS = ALLOWED_HOSTS
@@ -103,7 +105,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware', #CORS
+    'corsheaders.middleware.CorsMiddleware',  # CORS
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # JWT
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -168,7 +170,7 @@ GRAPHENE = {
 CORS_ALLOWED_ORIGIN = ALLOWED_GRAPHQL_ORIGINS
 CORS_ORIGIN_WHITELIST = ALLOWED_GRAPHQL_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = ['http_authorization','authorization','content-type']
+CORS_ALLOW_HEADERS = ['http_authorization', 'authorization', 'content-type']
 
 GRAPHQL_JWT = {
     "JWT_ALGORITHM": "ES384",
